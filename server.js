@@ -10,11 +10,11 @@ const { v4: uuidv4 } = require("uuid");
 const mongoose = require("mongoose");
 
 // ---------- MONGOOSE MODELS ----------
-const Booking = require("./models/Booking");
-const C2CRequest = require("./models/C2CRequest");
-const CscBooking = require("./models/CscBooking");
-const ContactMessage = require("./models/ContactMessage");
-const Product = require("./models/Product");
+const Booking = require("./Booking");
+const C2CRequest = require("./C2CRequest");
+const CscBooking = require("./CscBooking");
+const ContactMessage = require("./ContactMessage");
+const Product = require("./Product");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -675,3 +675,4 @@ app.patch("/api/admin/products/:id", checkAdminKey, async (req, res) => {
 app.listen(PORT, () => {
   console.log(`✅ Super Computers backend running on port ${PORT}`);
 });
+
