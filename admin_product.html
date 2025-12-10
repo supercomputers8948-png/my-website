@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Super Computers – Admin Products</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#4F46E5",
+            "primary-dark": "#4338CA",
+            accent: "#10B981",
+          },
+          fontFamily: {
+            sans: ["Inter", "system-ui", "Segoe UI", "Roboto", "sans-serif"],
+          },
+          boxShadow: {
+            soft: "0 18px 45px rgba(15, 23, 42, 0.10)",
+          },
+          keyframes: {
+            fadeInUp: {
+              "0%": { opacity: 0, transform: "translateY(6px)" },
+              "100%": { opacity: 1, transform: "translateY(0)" },
+            },
+            subtleIn: {
+              "0%": { opacity: 0, transform: "scale(0.98)" },
+              "100%": { opacity: 1, transform: "scale(1)" },
+            },
+            pulseSoft: {
+              "0%, 100%": { transform: "scale(1)" },
+              "50%": { transform: "scale(1.02)" },
+            },
+          },
+          animation: {
+            "fade-in-up": "fadeInUp 0.35s ease-out",
+            "subtle-in": "subtleIn 0.25s ease-out",
+            "pulse-soft": "pulseSoft 1.4s ease-in-out",
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(79, 70, 229, 0.09), transparent 55%),
+        radial-gradient(circle at bottom right, rgba(16, 185, 129, 0.06), transparent 55%),
+        #f3f4f6;
+    }
+
+    .page-header {
+      background: linear-gradient(135deg, #111827, #1f2937);
+      color: #e5e7eb;
+    }
+
+    .page-header h1 {
+      color: #f9fafb;
+    }
+
+    .page-header p {
+      color: #9ca3af;
+    }
+
+    .card {
+      border-radius: 0.9rem;
+      border: 1px solid rgba(148, 163, 184, 0.18);
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.07);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(8px);
+    }
+
+    table thead {
+      background: linear-gradient(90deg, #eef2ff, #e0f2fe);
+    }
+
+    tbody tr:hover {
+      background: #f9fafb;
+    }
+
+    #statusBox {
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+  </style>
+</head>
+<body class="font-sans text-gray-800">
+
+  <!-- Header -->
+  <header class="page-header sticky top-0 z-20 shadow-soft">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
+      <div class="animate-fade-in-up">
+        <h1 class="text-2xl font-extrabold md:text-3xl tracking-tight">
+          Admin – Products
+        </h1>
+        <p class="text-xs md:text-sm">
+          Manage daily availability, offers & pricing for your store.
+        </p>
+      </div>
+
+      <div class="flex items-center gap-3 text-xs animate-fade-in-up">
+        <button
+          id="btnChangeKey"
+          class="px-3 py-1 rounded-full border border-slate-600/20 text-slate-900 bg-white/90 hover:bg-white hover:shadow-sm text-[11px] flex items-center gap-1 transition-all">
+          <span class="text-[13px]">🔐</span>
+          Change Admin Key
+        </button>
+
+        <a
+          href="index.html"
+          class="px-3 py-1 rounded-full bg-primary text-white hover:bg-primary-dark text-[11px] font-medium shadow-md hover:shadow-lg hover:shadow-primary/25 flex items-center gap-1 transition-all">
+          <span class="text-[13px]">👀</span>
+          View Customer Site
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-6 space-y-5 md:space-y-6 animate-fade-in-up">
+    <!-- Status / Alerts -->
+    <div
+      id="statusBox"
+      class="hidden rounded-lg px-3 py-2 text-sm shadow-sm bg-blue-50 text-blue-700 border border-blue-100">
+    </div>
+
+    <!-- Quick Stats -->
+    <section class="card p-3 md:p-4 grid grid-cols-2 md:grid-cols-4 gap-3 text-xs md:text-sm animate-subtle-in">
+      <div class="flex flex-col gap-1">
+        <div class="text-gray-500 flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
+          Total Products
+        </div>
+        <div id="statTotalProducts" class="font-semibold text-gray-900 text-lg md:text-xl">–</div>
+        <span class="text-[11px] text-gray-400">All items in your inventory.</span>
+      </div>
+      <div class="flex flex-col gap-1">
+        <div class="text-gray-500 flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+          Active Offers
+        </div>
+        <div id="statActiveOffers" class="font-semibold text-amber-600 text-lg md:text-xl">–</div>
+        <span class="text-[11px] text-gray-400">Products with running discounts.</span>
+      </div>
+      <div class="flex flex-col gap-1">
+        <div class="text-gray-500 flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+          Visible Items
+        </div>
+        <div id="statVisibleItems" class="font-semibold text-emerald-600 text-lg md:text-xl">–</div>
+        <span class="text-[11px] text-gray-400">Live on customer-facing site.</span>
+      </div>
+      <div class="flex flex-col gap-1">
+        <div class="text-gray-500 flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+          Hidden Items
+        </div>
+        <div id="statHiddenItems" class="font-semibold text-gray-700 text-lg md:text-xl">–</div>
+        <span class="text-[11px] text-gray-400">Out-of-stock or disabled items.</span>
+      </div>
+    </section>
+
+    <!-- Quick Add Product -->
+    <section class="card p-4 md:p-5 animate-subtle-in">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-4">
+        <div>
+          <h2 class="font-semibold md:font-bold text-lg text-gray-900 flex items-center gap-2">
+            <span class="text-primary text-lg">＋</span>
+            Add New Product
+          </h2>
+          <p class="text-xs text-gray-500">
+            Quickly add an item with pricing, offer and stock information.
+          </p>
+        </div>
+        <span class="inline-flex items-center gap-2 text-[11px] text-gray-500">
+          <span class="w-1 h-1 rounded-full bg-red-500"></span>
+          <span><span class="text-red-500">*</span> Required fields</span>
+        </span>
+      </div>
+
+      <form id="formCreate" class="grid md:grid-cols-4 gap-3 md:gap-4 text-xs md:text-sm">
+        <div class="md:col-span-2">
+          <label class="block text-gray-700 mb-1">Title <span class="text-red-500">*</span></label>
+          <input
+            name="title"
+            class="w-full border border-gray-200 rounded-lg px-2 py-2 text-sm focus:ring-2 focus:ring-primary/60 focus:border-primary outline-none transition-all"
+            placeholder="e.g. HP Laptop 15s"
+            required />
+        </div>
+
+        <div>
+          <label class="block text-gray-700 mb-1">Category <span class="text-red-500">*</span></label>
+          <select
+            name="category"
+            class="w-full border border-gray-200 rounded-lg px-2 py-2 text-sm focus:ring-2 focus:ring-primary/60 focus:border-primary outline-none transition-all"
+            required>
+            <option value="computers">Computers</option>
+            <option value="mobiles">Mobiles</option>
+            <option value="accessories">Accessories</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-gray-700 mb-1">Price (₹) <span class="text-red-500">*</span></label>
+          <input
+            name="price"
+            type="number"
+            min="0"
+            step="1"
+            class="w-full border border-gray-200 rounded-lg px-2 py-2 text-sm text-right focus:ring-2 focus:ring-primary/60 focus:border-primary outline-none transition-all"
+            placeholder="e.g. 45999"
+            required />
+        </div>
+
+        <div>
+          <label class="block text-gray-700 mb-1">Offer %</label>
+          <input
+            name="offerPercentage"
+            type="number"
+            min="0"
+            max="90"
+            step="1"
+            class="w-full border border-gray-200 rounded-lg px-2 py-2 text-sm text-right focus:ring-2 focus:ring-primary/60 focus:border-primary outline-none transition-all"
+            placeholder="e.g. 10" />
+        </div>
+
+        <div>
+          <label class="block text-gray-700 mb-1">Stock</label>
+          <input
+            name="stock"
+            type="number"
+            min="0"
+            step="1"
+            class="w-full border border-gray-200 rounded-lg px-2 py-2 text-sm text-right focus:ring-2 focus:ring-primary/60 focus:border-primary outline-none transition-all"
+            placeholder="e.g. 5" />
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="block text-gray-700 mb-1">Image URL</label>
+          <input
+            name="image"
+            class="w-full border border-gray-200 rounded-lg px-2 py-2 text-sm focus:ring-2 focus:ring-primary/60 focus:border-primary outline-none transition-all"
+            placeholder="https://..." />
+        </div>
+
+        <div>
+          <label class="block text-gray-700 mb-1">Offer Expiry</label>
+          <input
+            name="offerExpiry"
+            type="date"
+            class="w-full border border-gray-200 rounded-lg px-2 py-2 text-sm focus:ring-2 focus:ring-primary/60 focus:border-primary outline-none transition-all" />
+        </div>
+
+        <div class="flex items-end">
+          <button
+            class="w-full bg-primary text-white font-semibold rounded-lg py-2 text-sm hover:bg-primary-dark transition-all shadow-md hover:shadow-lg hover:shadow-primary/25 animate-subtle-in">
+            Save Product
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Products Table -->
+    <section class="card p-4 md:p-5 animate-subtle-in">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
+        <div>
+          <h2 class="font-semibold md:font-bold text-lg text-gray-900 flex items-center gap-2">
+            <span class="text-primary text-lg">📦</span>
+            All Products
+          </h2>
+          <p class="text-xs text-gray-500">
+            Edit pricing, visibility and offers in-line. Click <span class="font-semibold text-gray-800">Save</span> per row to update.
+          </p>
+        </div>
+
+        <div class="flex items-center flex-wrap gap-2 text-[11px]">
+          <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-50 text-green-700 border border-green-100">
+            <span class="w-2 h-2 rounded-full bg-green-500 inline-block"></span> Visible
+          </span>
+          <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-gray-100 text-gray-600 border border-gray-200">
+            <span class="w-2 h-2 rounded-full bg-gray-400.inline-block"></span> Hidden
+          </span>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto rounded-lg border border-gray-100">
+        <table class="min-w-full text-xs md:text-sm">
+          <thead class="text-gray-700">
+            <tr>
+              <th class="px-2 py-2 text-left font-semibold">Title</th>
+              <th class="px-2 py-2 text-left font-semibold">Category</th>
+              <th class="px-2 py-2 text-right font-semibold">Price</th>
+              <th class="px-2 py-2 text-right font-semibold">Offer %</th>
+              <th class="px-2 py-2 text-right font-semibold">Stock</th>
+              <th class="px-2 py-2 text-left font-semibold">Offer Expiry</th>
+              <th class="px-2 py-2 text-left font-semibold">Image</th>
+              <th class="px-2 py-2 text-center font-semibold">Visible</th>
+              <th class="px-2 py-2 text-center font-semibold">Save</th>
+            </tr>
+          </thead>
+          <tbody id="productsBody" class="divide-y divide-gray-100 bg-white"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const API_BASE = "http://localhost:5000"; // change in production
+    let ADMIN_KEY = localStorage.getItem("SC_ADMIN_KEY") || "";
+    let PRODUCTS = [];
+
+    const statusBox = document.getElementById("statusBox");
+    const tbody = document.getElementById("productsBody");
+    const formCreate = document.getElementById("formCreate");
+    const btnChangeKey = document.getElementById("btnChangeKey");
+
+    // Stats
+    const statTotalProducts = document.getElementById("statTotalProducts");
+    const statActiveOffers = document.getElementById("statActiveOffers");
+    const statVisibleItems = document.getElementById("statVisibleItems");
+    const statHiddenItems = document.getElementById("statHiddenItems");
+
+    function setStatus(message, type = "info") {
+      statusBox.textContent = message;
+      statusBox.classList.remove(
+        "hidden",
+        "bg-red-50",
+        "text-red-700",
+        "border-red-100",
+        "bg-green-50",
+        "text-green-700",
+        "border-green-100",
+        "bg-blue-50",
+        "text-blue-700",
+        "border-blue-100"
+      );
+
+      statusBox.style.opacity = "1";
+      statusBox.style.transform = "translateY(0)";
+
+      if (type === "error") {
+        statusBox.classList.add("bg-red-50", "text-red-700", "border-red-100");
+      } else if (type === "success") {
+        statusBox.classList.add("bg-green-50", "text-green-700", "border-green-100");
+      } else {
+        statusBox.classList.add("bg-blue-50", "text-blue-700", "border-blue-100");
+      }
+    }
+
+    function clearStatus() {
+      statusBox.style.opacity = "0";
+      statusBox.style.transform = "translateY(-4px)";
+      setTimeout(() => statusBox.classList.add("hidden"), 180);
+    }
+
+    function ensureAdminKey() {
+      if (!ADMIN_KEY) {
+        ADMIN_KEY = prompt("Enter Admin Key (ADMIN_KEY from .env):") || "";
+        localStorage.setItem("SC_ADMIN_KEY", ADMIN_KEY);
+      }
+    }
+
+    btnChangeKey.addEventListener("click", () => {
+      ADMIN_KEY = "";
+      localStorage.removeItem("SC_ADMIN_KEY");
+      ensureAdminKey();
+      loadProducts();
+    });
+
+    async function loadProducts() {
+      ensureAdminKey();
+      clearStatus();
+      setStatus("Loading products...", "info");
+
+      try {
+        const res = await fetch(API_BASE + "/api/admin/products", {
+          headers: {
+            "x-admin-key": ADMIN_KEY,
+          },
+        });
+
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error("HTTP " + res.status + " – " + text);
+        }
+
+        const data = await res.json();
+        if (!data.success) {
+          throw new Error(data.message || "Failed to load products");
+        }
+
+        PRODUCTS = data.items || [];
+        renderProducts();
+        updateStats();
+        setStatus("Products loaded.", "success");
+        setTimeout(clearStatus, 1500);
+      } catch (err) {
+        console.error("loadProducts error:", err);
+        setStatus("Error loading products: " + err.message, "error");
+      }
+    }
+
+    function updateStats() {
+      const total = PRODUCTS.length;
+      const activeOffers = PRODUCTS.filter((p) => (p.offerPercentage || 0) > 0).length;
+      const visible = PRODUCTS.filter((p) => !p.hideProduct).length;
+      const hidden = PRODUCTS.filter((p) => p.hideProduct).length;
+
+      if (statTotalProducts) statTotalProducts.textContent = total || "0";
+      if (statActiveOffers) statActiveOffers.textContent = activeOffers || "0";
+      if (statVisibleItems) statVisibleItems.textContent = visible || "0";
+      if (statHiddenItems) statHiddenItems.textContent = hidden || "0";
+    }
+
+    function renderProducts() {
+      tbody.innerHTML = "";
+
+      if (!PRODUCTS.length) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="9" class="px-3 py-6 text-center text-gray-500 text-sm">
+              No products yet. Use "Add New Product" above to create one.
+            </td>
+          </tr>`;
+        return;
+      }
+
+      PRODUCTS.forEach((p, index) => {
+        const tr = document.createElement("tr");
+        tr.className =
+          (p.hideProduct ? "bg-gray-50" : "bg-white") +
+          " hover:bg-gray-50 transition-colors";
+
+        // slight stagger animation via inline style
+        tr.style.animation = `fadeInUp 0.25s ease-out ${index * 0.015}s both`;
+
+        const offerDate = p.offerExpiry ? new Date(p.offerExpiry).toISOString().slice(0, 10) : "";
+
+        tr.innerHTML = `
+          <td class="px-2 py-2 align-top w-48">
+            <input data-field="title" data-id="${p._id}" value="${p.title || ""}"
+              class="w-full border border-gray-200 rounded px-1.5 py-1 text-xs focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all" />
+          </td>
+          <td class="px-2 py-2 align-top w-28">
+            <select data-field="category" data-id="${p._id}"
+              class="w-full border border-gray-200 rounded px-1.5 py-1 text-xs focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all">
+              <option value="computers" ${p.category === "computers" ? "selected" : ""}>Computers</option>
+              <option value="mobiles" ${p.category === "mobiles" ? "selected" : ""}>Mobiles</option>
+              <option value="accessories" ${p.category === "accessories" ? "selected" : ""}>Accessories</option>
+              <option value="other" ${p.category === "other" ? "selected" : ""}>Other</option>
+            </select>
+          </td>
+          <td class="px-2 py-2 align-top text-right w-20">
+            <input data-field="price" data-id="${p._id}" type="number" min="0" step="1"
+              value="${p.price || 0}"
+              class="w-full border border-gray-200 rounded px-1.5 py-1 text-xs text-right focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all" />
+          </td>
+          <td class="px-2 py-2 align-top text-right w-20">
+            <input data-field="offerPercentage" data-id="${p._id}" type="number" min="0" max="90" step="1"
+              value="${p.offerPercentage || 0}"
+              class="w-full border border-gray-200 rounded px-1.5 py-1 text-xs text-right focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all" />
+          </td>
+          <td class="px-2 py-2 align-top text-right w-16">
+            <input data-field="stock" data-id="${p._id}" type="number" min="0" step="1"
+              value="${p.stock || 0}"
+              class="w-full border border-gray-200 rounded px-1.5 py-1 text-xs text-right focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all" />
+          </td>
+          <td class="px-2 py-2 align-top w-32">
+            <input data-field="offerExpiry" data-id="${p._id}" type="date"
+              value="${offerDate}"
+              class="w-full border border-gray-200 rounded px-1.5 py-1 text-xs focus:ring-1 focus:ring-primary focus:border-primary outline-none transition-all" />
+          </td>
+          <td class="px-2 py-2 align-top w-40">
+            <input data-field="image" data-id="${p._id}"
+              value="${Array.isArray(p.images) && p.images.length ? p.images[0] : ""}"
+              class="w-full border border-gray-200 rounded px-1.5 py-1 text-xs focus:ring-1 focus:ring-primary focus:border-primary outline-none mb-1 transition-all" />
+            ${
+              p.images && p.images[0]
+                ? `<a href="${p.images[0]}" target="_blank" class="text-[10px] text-primary underline">View</a>`
+                : `<span class="text-[10px] text-gray-400">No image</span>`
+            }
+          </td>
+          <td class="px-2 py-2 text-center align-top w-16">
+            <input data-field="hideProduct" data-id="${p._id}" type="checkbox" ${p.hideProduct ? "" : "checked"} />
+            <div class="text-[10px] text-gray-500 mt-1">${p.hideProduct ? "Hidden" : "Visible"}</div>
+          </td>
+          <td class="px-2 py-2 text-center align-top w-20">
+            <button data-action="save" data-id="${p._id}"
+              class="px-2.5 py-1 rounded bg-accent text-white text-xs hover:bg-emerald-600 transition-all shadow-sm hover:shadow-md hover:shadow-emerald-200/40">
+              Save
+            </button>
+          </td>
+        `;
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function saveProductRow(id) {
+      const rowInputs = tbody.querySelectorAll(`[data-id="${id}"]`);
+      const payload = {};
+
+      rowInputs.forEach((el) => {
+        const field = el.getAttribute("data-field");
+        if (!field) return;
+
+        if (field === "hideProduct") {
+          // checkbox = visible; backend expects hideProduct
+          payload.hideProduct = !el.checked;
+        } else if (field === "price" || field === "offerPercentage" || field === "stock") {
+          const val = el.value;
+          if (val === "") {
+            payload[field] = 0;
+          } else {
+            payload[field] = Number(val);
+          }
+        } else if (field === "offerExpiry") {
+          payload.offerExpiry = el.value || null;
+        } else if (field === "image") {
+          const url = el.value.trim();
+          payload.images = url ? [url] : [];
+        } else {
+          payload[field] = el.value;
+        }
+      });
+
+      try {
+        setStatus("Saving product...", "info");
+
+        const res = await fetch(API_BASE + "/api/admin/products/" + id, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            "x-admin-key": ADMIN_KEY,
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          throw new Error(data.message || "Failed to update product");
+        }
+
+        setStatus("Product updated successfully.", "success");
+        loadProducts(); // refresh list so any priceHistory / derived fields are up to date
+      } catch (err) {
+        console.error("saveProductRow error:", err);
+        setStatus("Error saving product: " + err.message, "error");
+      }
+    }
+
+    function onTableClick(e) {
+      const btn = e.target.closest("button[data-action='save']");
+      if (!btn) return;
+      const id = btn.getAttribute("data-id");
+      if (!id) return;
+      saveProductRow(id);
+    }
+
+    // Attach table click listener once
+    tbody.addEventListener("click", onTableClick);
+
+    formCreate.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      ensureAdminKey();
+
+      const fd = new FormData(formCreate);
+      const payload = {
+        title: fd.get("title") || "",
+        category: fd.get("category") || "other",
+        price: Number(fd.get("price") || 0),
+        offerPercentage: fd.get("offerPercentage")
+          ? Number(fd.get("offerPercentage"))
+          : 0,
+        stock: fd.get("stock") ? Number(fd.get("stock")) : 0,
+        hideProduct: false,
+        images: fd.get("image") ? [fd.get("image")] : [],
+        offerExpiry: fd.get("offerExpiry") || null,
+      };
+
+      try {
+        setStatus("Creating product...", "info");
+        const res = await fetch(API_BASE + "/api/admin/products", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-admin-key": ADMIN_KEY,
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+          throw new Error(data.message || "Failed to create product");
+        }
+
+        setStatus("Product created successfully.", "success");
+        formCreate.reset();
+        loadProducts();
+      } catch (err) {
+        console.error("create product error:", err);
+        setStatus("Error creating product: " + err.message, "error");
+      }
+    });
+
+    // Init
+    ensureAdminKey();
+    loadProducts();
+  </script>
+</body>
+</html>

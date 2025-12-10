@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Track Repair – Super Computers</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+  <div class="max-w-md mx-auto mt-10 bg-white p-6 rounded shadow">
+    <h1 class="text-xl font-bold mb-4 text-indigo-700">
+      Track Your Repair Ticket
+    </h1>
+    <label class="block text-sm font-semibold mb-1">
+      Enter Phone Number:
+    </label>
+    <input
+      id="phone"
+      class="border rounded w-full px-3 py-2 mb-3"
+      placeholder="9876543210"
+    />
+    <button
+      onclick="track()"
+      class="w-full bg-indigo-600 text-white py-2 rounded"
+    >
+      Check Status
+    </button>
+
+    <div id="result" class="mt-4 text-sm text-gray-700 hidden"></div>
+  </div>
+
+  <script>
+    const API_BASE = "http://localhost:5000/api";
+
+    async function track() {
+      const phone = document.getElementById("phone").value.trim();
+      const resultDiv = document.getElementById("result");
+      if (!phone) {
+        resultDiv.textContent = "Please enter phone number.";
+        resultDiv.classList.remove("hidden");
+        return;
+      }
+
+      const res = await fetch(
+        API_BASE + "/track?phone=" + encodeURIComponent(phone)
+      );
+      const data = await res.json();
+      if (!data.success) {
+        resultDiv.textContent = data.message || "No booking found.";
+      } else {
+        const b = data.booking;
+        resultDiv.innerHTML =
+          `<p><strong>Ticket:</strong> ${b.id}</p>` +
+          `<p><strong>Status:</strong> ${b.status}</p>` +
+          `<p><strong>Notes:</strong> ${b.description}</p>` +
+          `<p><strong>Estimate:</strong> ${
+            b.estimate ? "₹" + b.estimate.toLocaleString("en-IN") : "N/A"
+          }</p>`;
+      }
+      resultDiv.classList.remove("hidden");
+    }
+  </script>
+</body>
+</html>

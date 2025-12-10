@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Super Computers – Admin Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#4F46E5",
+            "primary-dark": "#4338CA",
+            accent: "#10B981",
+          },
+          fontFamily: {
+            sans: ["Inter", "system-ui", "Segoe UI", "sans-serif"],
+          },
+          boxShadow: {
+            soft: "0 18px 45px rgba(15, 23, 42, 0.12)",
+          },
+          keyframes: {
+            fadeInUp: {
+              "0%": { opacity: 0, transform: "translateY(10px)" },
+              "100%": { opacity: 1, transform: "translateY(0)" },
+            },
+            scaleIn: {
+              "0%": { opacity: 0, transform: "scale(0.95)" },
+              "100%": { opacity: 1, transform: "scale(1)" },
+            },
+            slideInRight: {
+              "0%": { opacity: 0, transform: "translateX(20px)" },
+              "100%": { opacity: 1, transform: "translateX(0)" },
+            },
+            toastIn: {
+              "0%": { opacity: 0, transform: "translateY(8px)" },
+              "100%": { opacity: 1, transform: "translateY(0)" },
+            },
+          },
+          animation: {
+            "fade-in-up": "fadeInUp 0.35s ease-out",
+            "scale-in": "scaleIn 0.28s ease-out",
+            "slide-in-right": "slideInRight 0.3s ease-out",
+            "toast-in": "toastIn 0.2s ease-out",
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="bg-slate-950 bg-[radial-gradient(circle_at_top,_#1e293b,_#020617)] font-sans text-slate-100">
+
+<!-- LOADING OVERLAY -->
+<div
+  id="loading-overlay"
+  class="fixed inset-0 z-40 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm hidden"
+>
+  <div class="flex flex-col items-center gap-3">
+    <div class="h-10 w-10 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+    <p class="text-xs uppercase tracking-[0.25em] text-slate-300">
+      Syncing dashboard…
+    </p>
+  </div>
+</div>
+
+<!-- LOGIN SCREEN -->
+<div class="min-h-screen flex items-center justify-center px-4" id="login-screen">
+  <div
+    class="relative w-full max-w-md rounded-3xl border border-slate-800/70 bg-slate-900/70 backdrop-blur-xl shadow-soft p-8 animate-scale-in"
+  >
+    <!-- Glow -->
+    <div class="pointer-events-none absolute -inset-px rounded-3xl bg-gradient-to-br from-primary/30 via-transparent to-accent/20 opacity-40 blur-xl"></div>
+
+    <div class="relative z-10">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="h-11 w-11 rounded-2xl bg-primary/15 flex items-center justify-center text-xl shadow-inner">
+          💻
+        </div>
+        <div>
+          <h1 class="text-xl font-semibold text-slate-50 tracking-tight">
+            Super Computers
+          </h1>
+          <p class="text-xs text-slate-400">
+            Admin Login &mdash; <span class="text-primary">Secure Area</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="mb-1 flex items-center justify-between">
+        <label class="block text-xs font-medium text-slate-300">
+          Admin Key / Password
+        </label>
+        <span class="text-[10px] text-slate-500">
+          For shop owner only
+        </span>
+      </div>
+
+      <div class="relative mb-4">
+        <span class="pointer-events-none absolute inset-y-0.left-3 flex items-center text-xs text-slate-500">
+          🔐
+        </span>
+        <input
+          type="password"
+          id="admin-key-input"
+          class="w-full bg-slate-900/80 border border-slate-700 rounded-xl pl-8 pr-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-all"
+          placeholder="Enter admin key"
+        />
+      </div>
+
+      <button
+        onclick="handleLogin()"
+        class="group relative w-full bg-primary hover:bg-primary-dark text-white text-sm font-semibold py-2.5 rounded-xl mt-1 flex items-center justify-center gap-2 transition-all shadow-md hover:shadow-lg hover:shadow-primary/30"
+      >
+        <span>Login to Dashboard</span>
+        <span class="text-xs opacity-80 group-hover:translate-x-0.5 transition-transform">→</span>
+      </button>
+
+      <p class="mt-4 text-[11px] leading-relaxed text-slate-400">
+        This dashboard allows you to manage repair bookings, products, card-to-cash requests,
+        CSC services, and contact messages. Keep the admin key private.
+      </p>
+
+      <p
+        id="login-error"
+        class="mt-3 text-xs text-red-400 bg-red-500/10 border border-red-500/40 rounded-lg px-3 py-2 hidden"
+      ></p>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="hidden min-h-screen">
+  <!-- Top bar -->
+  <header class="bg-slate-900/80 backdrop-blur-xl shadow-soft sticky top-0 z-20 border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="h-9 w-9 rounded-2xl bg-primary/20 flex items-center justify-center text-lg shadow-inner">
+          💼
+        </div>
+        <div>
+          <h1 class="font-semibold text-slate-50 text-base md:text-lg tracking-tight">
+            Admin Dashboard
+          </h1>
+          <p class="text-[11px] text-slate-400">
+            Super Computers &ndash; <span class="text-slate-300">Galiveedu</span>
+          </p>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <span
+          id="summary-text"
+          class="hidden text-[11px] md:text-xs px-3 py-1 rounded-full bg-slate-800/80 text-slate-300 border border-slate-700/70"
+        ></span>
+        <button
+          onclick="loadAll()"
+          class="hidden md:inline-flex items-center gap-1 text-[11px] px-3 py-1 border border-slate-700 rounded-full hover:bg-slate-800 text-slate-300 transition-colors"
+        >
+          <span class="text-xs">⟳</span>
+          Refresh
+        </button>
+        <button
+          onclick="logout()"
+          class="text-[11px] md:text-xs px-3 py-1 border border-slate-700 rounded-full hover:bg-red-500/10 hover:border-red-500/60 hover:text-red-200 text-slate-300 transition-all"
+        >
+          Logout
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="max-w-7xl mx-auto px-4 py-6 space-y-6 animate-fade-in-up">
+    <!-- Summary cards -->
+    <section class="grid md:grid-cols-5 gap-4">
+      <div class="group bg-slate-900/70 border border-slate-800 rounded-2xl p-4 shadow-soft backdrop-blur-xl hover:border-primary/60 hover:-translate-y-0.5 transition-all">
+        <div class="flex items-center justify-between text-xs text-slate-400">
+          <span>Repair Bookings</span>
+          <span class="text-[10px] bg-primary/20 text-primary px-2 py-0.5 rounded-full">
+            Live
+          </span>
+        </div>
+        <p id="sum-bookings" class="mt-3 text-2xl font-bold text-primary">
+          –
+        </p>
+        <p class="mt-1 text-[11px] text-slate-500">Track all repair tickets and their status.</p>
+      </div>
+
+      <div class="group bg-slate-900/70 border border-slate-800 rounded-2xl p-4 shadow-soft backdrop-blur-xl hover:border-primary/60 hover:-translate-y-0.5 transition-all">
+        <div class="flex items-center justify-between text-xs text-slate-400">
+          <span>Card-to-Cash</span>
+          <span class="text-[10px] bg-emerald-500/15 text-emerald-300 px-2 py-0.5 rounded-full">
+            Finance
+          </span>
+        </div>
+        <p id="sum-c2c" class="mt-3 text-2xl font-bold text-emerald-400">
+          –
+        </p>
+        <p class="mt-1 text-[11px] text-slate-500">See incoming card-to-cash requests.</p>
+      </div>
+
+      <div class="group bg-slate-900/70 border border-slate-800 rounded-2xl p-4 shadow-soft backdrop-blur-xl hover:border-primary/60 hover:-translate-y-0.5 transition-all">
+        <div class="flex items-center justify-between text-xs text-slate-400">
+          <span>CSC Bookings</span>
+          <span class="text-[10px] bg-cyan-500/15 text-cyan-300 px-2 py-0.5 rounded-full">
+            Services
+          </span>
+        </div>
+        <p id="sum-csc" class="mt-3 text-2xl font-bold text-cyan-400">
+          –
+        </p>
+        <p class="mt-1 text-[11px] text-slate-500">Digital seva and CSC slot bookings.</p>
+      </div>
+
+      <div class="group bg-slate-900/70 border border-slate-800 rounded-2xl p-4 shadow-soft backdrop-blur-xl hover:border-primary/60 hover:-translate-y-0.5 transition-all">
+        <div class="flex items-center justify-between text-xs text-slate-400">
+          <span>Contact Messages</span>
+          <span class="text-[10px] bg-amber-500/15 text-amber-300 px-2 py-0.5 rounded-full">
+            Leads
+          </span>
+        </div>
+        <p id="sum-contact" class="mt-3.text-2xl font-bold text-amber-300">
+          –
+        </p>
+        <p class="mt-1 text-[11px] text-slate-500">Enquiries coming from your website.</p>
+      </div>
+
+      <div class="group bg-slate-900/70 border border-slate-800 rounded-2xl p-4 shadow-soft backdrop-blur-xl hover:border-primary/60 hover:-translate-y-0.5 transition-all">
+        <div class="flex items-center justify-between text-xs text-slate-400">
+          <span>Products</span>
+          <span class="text-[10px] bg-fuchsia-500/15 text-fuchsia-300 px-2 py-0.5 rounded-full">
+            Shop
+          </span>
+        </div>
+        <p id="sum-products" class="mt-3 text-2xl font-bold text-fuchsia-300">
+          –
+        </p>
+        <p class="mt-1 text-[11px] text-slate-500">Items visible in your online shop.</p>
+      </div>
+    </section>
+
+    <!-- Tabs -->
+    <section>
+      <div class="mb-4 border-b border-slate-800 flex gap-1 overflow-x-auto hide-scrollbar">
+        <button
+          id="tab-btn-bookings"
+          class="tab-btn tab-btn-active"
+          onclick="switchTab('bookings')"
+        >
+          <span class="text-sm">📋 Bookings</span>
+        </button>
+        <button
+          id="tab-btn-products"
+          class="tab-btn"
+          onclick="switchTab('products')"
+        >
+          <span class="text-sm">🛒 Products</span>
+        </button>
+        <button
+          id="tab-btn-c2c"
+          class="tab-btn"
+          onclick="switchTab('c2c')"
+        >
+          <span class="text-sm">💳 Card-to-Cash</span>
+        </button>
+        <button
+          id="tab-btn-csc"
+          class="tab-btn"
+          onclick="switchTab('csc')"
+        >
+          <span class="text-sm">🧾 CSC</span>
+        </button>
+        <button
+          id="tab-btn-contact"
+          class="tab-btn"
+          onclick="switchTab('contact')"
+        >
+          <span class="text-sm">✉️ Contact</span>
+        </button>
+      </div>
+
+      <!-- Bookings tab -->
+      <section id="tab-bookings" class="tab-section">
+        <div class="flex items-center justify-between mb-3">
+          <div>
+            <h2 class="font-semibold text-slate-50 text-sm md:text-base">
+              Repair Bookings
+            </h2>
+            <p class="text-[11px] text-slate-500">
+              Update ticket status and payment details. Click <span class="font-semibold text-slate-300">Save</span> after changes.
+            </p>
+          </div>
+          <button
+            onclick="loadBookings()"
+            class="hidden md:inline-flex items-center gap-1 text-[11px] px-3 py-1 border border-slate-700 rounded-full hover:bg-slate-800 text-slate-300 transition-colors"
+          >
+            ⟳ Refresh
+          </button>
+        </div>
+
+        <div class="bg-slate-900/70 rounded-2xl shadow-soft border border-slate-800 overflow-hidden">
+          <div class="max-h-[60vh] overflow-auto">
+            <table class="min-w-full text-[11px] md:text-xs">
+              <thead class="bg-slate-900/90 text-slate-400 sticky top-0 z-10">
+                <tr>
+                  <th class="px-3 py-2 text-left font-medium">Created</th>
+                  <th class="px-3 py-2 text-left font-medium">Ticket ID</th>
+                  <th class="px-3 py-2 text-left font-medium">Device</th>
+                  <th class="px-3 py-2 text-left font-medium">Date Slot</th>
+                  <th class="px-3 py-2 text-left font-medium">Phone</th>
+                  <th class="px-3 py-2 text-left font-medium">Status</th>
+                  <th class="px-3 py-2 text-left font-medium">Estimate (₹)</th>
+                  <th class="px-3 py-2 text-left font-medium">Final (₹)</th>
+                  <th class="px-3 py-2 text-left font-medium">Action</th>
+                </tr>
+              </thead>
+              <tbody id="booking-rows" class="divide-y divide-slate-800/80"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRODUCTS TAB -->
+      <section id="tab-products" class="tab-section hidden">
+        <div class="flex items-center justify-between mb-3">
+          <div>
+            <h2 class="font-semibold text-slate-50 text-sm md:text-base">
+              Products & Offers
+            </h2>
+            <p class="text-[11px] text-slate-500">
+              Manage shop items, offers (percentage), stock, and visibility. Price history is stored automatically.
+            </p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button
+              onclick="loadProducts()"
+              class="hidden md:inline-flex items-center.gap-1 text-[11px] px-3 py-1 border border-slate-700 rounded-full hover:bg-slate-800 text-slate-300 transition-colors"
+            >
+              ⟳ Refresh
+            </button>
+            <button
+              onclick="openProductPanel(null)"
+              class="inline-flex items-center gap-1 text-[11px] px-3 py-1 bg-primary text-white rounded-full hover:bg-primary-dark shadow-sm"
+            >
+              ＋ Add Product
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-slate-900/70 rounded-2xl shadow-soft border border-slate-800 overflow-hidden">
+          <div class="px-3 pt-3 pb-1 flex flex-wrap gap-3 text-[11px] text-slate-400">
+            <div class="flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <span>In stock & visible</span>
+            </div>
+            <div class="flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+              <span>Low stock</span>
+            </div>
+            <div class="flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-rose-400"></span>
+              <span>Hidden or 0 stock</span>
+            </div>
+          </div>
+          <div class="max-h-[60vh] overflow-auto">
+            <table class="min-w-full text-[11px] md:text-xs">
+              <thead class="bg-slate-900/90 text-slate-400 sticky top-0 z-10">
+                <tr>
+                  <th class="px-3 py-2 text-left font-medium">Name</th>
+                  <th class="px-3 py-2 text-left font-medium">Category</th>
+                  <th class="px-3 py-2 text-left font-medium">Price</th>
+                  <th class="px-3 py-2 text-left font-medium">Offer</th>
+                  <th class="px-3 py-2 text-left font-medium">Stock</th>
+                  <th class="px-3 py-2 text-left font-medium">Visible</th>
+                  <th class="px-3 py-2 text-left font-medium">Updated</th>
+                  <th class="px-3 py-2 text-left font-medium">Action</th>
+                </tr>
+              </thead>
+              <tbody id="product-rows" class="divide-y divide-slate-800/80"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- C2C tab -->
+      <section id="tab-c2c" class="tab-section hidden">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-semibold text-slate-50 text-sm md:text-base">
+            Card-to-Cash Requests
+          </h2>
+          <button
+            onclick="loadC2C()"
+            class="hidden md:inline-flex items-center.gap-1 text-[11px] px-3 py-1 border border-slate-700 rounded-full hover:bg-slate-800 text-slate-300 transition-colors"
+          >
+            ⟳ Refresh
+          </button>
+        </div>
+
+        <div class="bg-slate-900/70 rounded-2xl shadow-soft border border-slate-800 overflow-hidden">
+          <div class="max-h-[60vh] overflow-auto">
+            <table class="min-w-full text-[11px] md:text-xs">
+              <thead class="bg-slate-900/90 text-slate-400 sticky top-0 z-10">
+                <tr>
+                  <th class="px-3 py-2 text-left font-medium">Created</th>
+                  <th class="px-3 py-2 text-left font-medium">ID</th>
+                  <th class="px-3 py-2 text-left font-medium">Brand</th>
+                  <th class="px-3 py-2 text-left font-medium">Amount</th>
+                  <th class="px-3 py-2 text-left font-medium">Name</th>
+                  <th class="px-3 py-2 text-left font-medium">Phone</th>
+                </tr>
+              </thead>
+              <tbody id="c2c-rows" class="divide-y divide-slate-800/80"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- CSC tab -->
+      <section id="tab-csc" class="tab-section hidden">
+        <div class="flex items-center justify-between.mb-3">
+          <h2 class="font-semibold text-slate-50 text-sm md:text-base">
+            CSC Bookings
+          </h2>
+          <button
+            onclick="loadCSC()"
+            class="hidden md:inline-flex items-center.gap-1 text-[11px] px-3 py-1 border border-slate-700 rounded-full hover:bg-slate-800 text-slate-300 transition-colors"
+          >
+            ⟳ Refresh
+          </button>
+        </div>
+
+        <div class="bg-slate-900/70 rounded-2xl shadow-soft border border-slate-800 overflow-hidden">
+          <div class="max-h-[60vh] overflow-auto">
+            <table class="min-w-full text-[11px] md:text-xs">
+              <thead class="bg-slate-900/90 text-slate-400 sticky top-0 z-10">
+                <tr>
+                  <th class="px-3 py-2 text-left font-medium">Created</th>
+                  <th class="px-3 py-2 text-left font-medium">ID</th>
+                  <th class="px-3 py-2 text-left font-medium">Service</th>
+                  <th class="px-3 py-2 text-left font-medium">Date</th>
+                  <th class="px-3 py-2 text-left font-medium">Name</th>
+                  <th class="px-3 py-2 text-left font-medium">Phone</th>
+                  <th class="px-3 py-2 text-left font-medium">Notes</th>
+                </tr>
+              </thead>
+              <tbody id="csc-rows" class="divide-y divide-slate-800/80"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact tab -->
+      <section id="tab-contact" class="tab-section hidden">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="font-semibold text-slate-50 text-sm md:text-base">
+            Contact Messages
+          </h2>
+          <button
+            onclick="loadContact()"
+            class="hidden md:inline-flex items-center.gap-1 text-[11px] px-3 py-1 border border-slate-700 rounded-full hover:bg-slate-800 text-slate-300 transition-colors"
+          >
+            ⟳ Refresh
+          </button>
+        </div>
+
+        <div class="bg-slate-900/70 rounded-2xl shadow-soft border border-slate-800 overflow-hidden">
+          <div class="max-h-[60vh] overflow-auto">
+            <table class="min-w-full text-[11px] md:text-xs">
+              <thead class="bg-slate-900/90 text-slate-400 sticky top-0 z-10">
+                <tr>
+                  <th class="px-3 py-2 text-left font-medium">Created</th>
+                  <th class="px-3 py-2 text-left font-medium">ID</th>
+                  <th class="px-3 py-2 text-left font-medium">Name</th>
+                  <th class="px-3 py-2 text-left font-medium">Email</th>
+                  <th class="px-3 py-2 text-left font-medium">Phone</th>
+                  <th class="px-3 py-2 text-left font-medium">Subject</th>
+                  <th class="px-3 py-2 text-left font-medium">Message</th>
+                </tr>
+              </thead>
+              <tbody id="contact-rows" class="divide-y divide-slate-800/80"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+</div>
+
+<!-- PRODUCT SLIDE-OVER PANEL -->
+<div
+  id="product-panel"
+  class="fixed inset-y-0 right-0 w-full max-w-xl bg-slate-950/95 border-l border-slate-800 shadow-soft transform translate-x-full transition-transform duration-300 z-30"
+>
+  <div class="h-full flex flex-col">
+    <!-- Header -->
+    <div class="px-4 py-3 border-b border-slate-800 flex items-center justify-between bg-slate-950/90 backdrop-blur">
+      <div>
+        <p id="product-panel-title" class="text-sm font-semibold text-slate-50">New Product</p>
+        <p class="text-[11px] text-slate-500">
+          Price changes are tracked automatically in price history.
+        </p>
+      </div>
+      <button
+        onclick="closeProductPanel()"
+        class="text-xs px-2.5 py-1 rounded-full border border-slate-700 text-slate-300 hover:bg-slate-800"
+      >
+        ✕ Close
+      </button>
+    </div>
+
+    <!-- Body -->
+    <form id="product-form" class="flex-1 overflow-y-auto px-4 py-4 space-y-4 text-[13px]" onsubmit="saveProduct(event)">
+      <input type="hidden" id="prod-id" />
+
+      <!-- Name & Category -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div class="md:col-span-2">
+          <label class="block text-slate-300 text-xs mb-1">Product Name</label>
+          <input
+            id="prod-title"
+            required
+            class="w-full bg-slate-900/80 border border-slate-700 rounded-md px-3 py-2 text-xs text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-primary"
+            placeholder="e.g., NVMe SSD 500GB"
+          />
+        </div>
+        <div>
+          <label class="block text-slate-300 text-xs mb-1">Category</label>
+          <select
+            id="prod-category"
+            required
+            class="w-full bg-slate-900/80 border border-slate-700 rounded-md px-3 py-2 text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-primary"
+          >
+            <option value="">Select</option>
+            <option>Laptop</option>
+            <option>Computer Accessories</option>
+            <option>Mobile Accessories</option>
+            <option>Printers</option>
+            <option>Networking</option>
+            <option>Gaming Accessories</option>
+            <option>Computer Services</option>
+            <option>Mobile Services</option>
+            <option>Others</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div>
+        <label class="block text-slate-300 text-xs.mb-1">Short Description</label>
+        <textarea
+          id="prod-description"
+          rows="2"
+          class="w-full bg-slate-900/80 border border-slate-700 rounded-md px-3 py-2 text-xs text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-primary"
+          placeholder="e.g., High-speed NVMe SSD suitable for laptops and desktops."
+        ></textarea>
+      </div>
+
+      <!-- Price & Stock -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div>
+          <label class="block text-slate-300 text-xs mb-1">Base Price (₹)</label>
+          <input
+            id="prod-price"
+            type="number"
+            min="0"
+            step="1"
+            required
+            class="w-full bg-slate-900/80 border border-slate-700 rounded-md px-3 py-2 text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-primary"
+          />
+        </div>
+        <div>
+          <label class="block text-slate-300 text-xs mb-1">% Offer</label>
+          <input
+            id="prod-offer-percentage"
+            type="number"
+            min="0"
+            max="100"
+            step="1"
+            class="w-full bg-slate-900/80 border border-slate-700 rounded-md px-3 py-2 text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-primary"
+            placeholder="0–100"
+          />
+        </div>
+        <div>
+          <label class="block text-slate-300 text-xs mb-1">Offer Expiry</label>
+          <input
+            id="prod-offer-expiry"
+            type="datetime-local"
+            class="w-full bg-slate-900/80 border border-slate-700 rounded-md px-3 py-2 text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-primary"
+          />
+        </div>
+        <div>
+          <label class="block text-slate-300 text-xs mb-1">Stock Count</label>
+          <input
+            id="prod-stock"
+            type="number"
+            min="0"
+            step="1"
+            class="w-full bg-slate-900/80 border border-slate-700 rounded-md px-3 py-2 text-xs text-slate-100 focus:outline-none focus:ring-1 focus:ring-primary"
+            placeholder="e.g., 10"
+          />
+        </div>
+      </div>
+
+      <!-- Visibility & flags -->
+      <div class="flex flex-wrap gap-4 items-center">
+        <label class="inline-flex items-center gap-2 text-xs text-slate-300">
+          <input
+            id="prod-hide"
+            type="checkbox"
+            class="rounded border-slate-600 bg-slate-900 text-primary focus:ring-primary"
+          />
+          <span>Hide this product from shop</span>
+        </label>
+        <p class="text-[11px] text-slate-500">
+          Offer will auto-remove after expiry. Price history is recorded whenever price changes.
+        </p>
+      </div>
+
+      <!-- Images -->
+      <div>
+        <label class="block text-slate-300 text-xs mb-1">Image URLs (multiple)</label>
+        <div class="flex gap-2 mb-2">
+          <input
+            id="prod-image-input"
+            class="flex-1 bg-slate-900/80 border border-slate-700 rounded-md px-3 py-2 text-xs text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-primary"
+            placeholder="Paste image URL and click Add"
+          />
+          <button
+            type="button"
+            onclick="addImageUrl()"
+            class="px-3 py-2 text-xs rounded-md bg-slate-800 border border-slate-600 hover:bg-slate-700 text-slate-100"
+          >
+            Add
+          </button>
+        </div>
+        <div id="prod-images-chips" class="flex flex-wrap gap-1.5 text-[11px]"></div>
+      </div>
+
+      <!-- Price history (read-only) -->
+      <div id="prod-history-block" class="hidden border-t border-slate-800 pt-3 mt-2">
+        <div class="flex items-center justify-between mb-2">
+          <p class="text-xs font-semibold text-slate-300">Price History</p>
+          <p class="text-[11px] text-slate-500">Last 5 changes</p>
+        </div>
+        <ul id="prod-history-list" class="space-y-1 text-[11px] text-slate-400"></ul>
+      </div>
+
+      <!-- Submit -->
+      <div class="pt-2 pb-6 flex items-center justify-between">
+        <p class="text-[11px] text-slate-500">
+          Click <span class="text-slate-200 font-semibold">Save Product</span> to update shop listing.
+        </p>
+        <button
+          type="submit"
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-md bg-primary text-white text-xs font-semibold hover:bg-primary-dark shadow-soft"
+        >
+          <span>Save Product</span>
+          <span>✔</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Small toast -->
+<div
+  id="toast"
+  class="fixed bottom-4 right-4 bg-slate-900/90 border border-slate-700 text-[11px] px-4 py-2 rounded-full shadow-lg.hidden z-30"
+></div>
+
+<script>
+  const API_BASE = "http://localhost:5000";
+  const STATUSES = ["Pending", "In Progress", "Completed", "Delivered", "Cancelled"];
+
+  let adminKey = null;
+  let productImages = [];
+  let editingProduct = null;
+
+  function showToast(msg, isError = false) {
+    const el = document.getElementById("toast");
+    el.textContent = msg;
+    el.classList.remove("hidden");
+    el.classList.add("animate-toast-in");
+    el.classList.toggle("bg-red-700/90", !!isError);
+    el.classList.toggle("border-red-500/80", !!isError);
+    el.classList.toggle("text-red-100", !!isError);
+    el.classList.toggle("bg-slate-900/90", !isError);
+    el.classList.toggle("border-slate-700", !isError);
+    el.classList.toggle("text-slate-100", !isError);
+
+    clearTimeout(el._timeout);
+    el._timeout = setTimeout(() => {
+      el.classList.add("hidden");
+      el.classList.remove("animate-toast-in");
+    }, 2800);
+  }
+
+  function showLoading(show) {
+    const overlay = document.getElementById("loading-overlay");
+    if (show) {
+      overlay.classList.remove("hidden");
+    } else {
+      overlay.classList.add("hidden");
+    }
+  }
+
+  function switchTab(name) {
+    ["bookings", "products", "c2c", "csc", "contact"].forEach((t) => {
+      const section = document.getElementById("tab-" + t);
+      const btn = document.getElementById("tab-btn-" + t);
+      const isActive = t === name;
+
+      section.classList.toggle("hidden", !isActive);
+      if (isActive) {
+        section.classList.add("animate-fade-in-up");
+      } else {
+        section.classList.remove("animate-fade-in-up");
+      }
+
+      if (btn) btn.classList.toggle("tab-btn-active", isActive);
+    });
+  }
+
+  async function apiGet(path) {
+    const res = await fetch(API_BASE + path, {
+      headers: { "x-admin-key": adminKey },
+    });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    return res.json();
+  }
+
+  async function apiPatch(path, body) {
+    const res = await fetch(API_BASE + path, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "x-admin-key": adminKey,
+      },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    return res.json();
+  }
+
+  async function apiPost(path, body) {
+    const res = await fetch(API_BASE + path, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-admin-key": adminKey,
+      },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    return res.json();
+  }
+
+  function fmtDate(d) {
+    if (!d) return "-";
+    const dt = new Date(d);
+    return dt.toLocaleString("en-IN");
+  }
+
+  function fmtDateShort(d) {
+    if (!d) return "-";
+    const dt = new Date(d);
+    return dt.toLocaleDateString("en-IN", {
+      day: "2-digit",
+      month: "short",
+      year: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  }
+
+  function fmtINR(x) {
+    if (x === null || typeof x === "undefined") return "";
+    return Number(x).toLocaleString("en-IN", { maximumFractionDigits: 0 });
+  }
+
+  function computeOfferLabel(p) {
+    const perc = Number(p.offerPercentage || 0);
+    if (!perc) return "—";
+
+    const expiry = p.offerExpiry ? new Date(p.offerExpiry) : null;
+    const now = new Date();
+    const expired = expiry && expiry.getTime() < now.getTime();
+
+    if (expired) {
+      return `Expired (${perc}% off)`;
+    }
+    if (!expiry) {
+      return `${perc}% off`;
+    }
+    return `${perc}% off till ${expiry.toLocaleDateString("en-IN")}`;
+  }
+
+  function isProductVisible(p) {
+    const hidden = !!p.hideProduct;
+    const stock = Number(p.stock || 0);
+    return !hidden && stock > 0;
+  }
+
+  function stockBadgeClass(p) {
+    const stock = Number(p.stock || 0);
+    const hidden = !!p.hideProduct;
+    if (hidden || stock === 0) return "bg-rose-500/15 text-rose-300 border border-rose-500/40";
+    if (stock <= 3) return "bg-amber-500/15 text-amber-300 border border-amber-500/40";
+    return "bg-emerald-500/15 text-emerald-300 border border-emerald-500/40";
+  }
+
+  async function handleLogin() {
+    const keyInput = document.getElementById("admin-key-input");
+    const errorEl = document.getElementById("login-error");
+    errorEl.classList.add("hidden");
+
+    const key = keyInput.value.trim();
+    if (!key) {
+      errorEl.textContent = "Please enter admin key.";
+      errorEl.classList.remove("hidden");
+      return;
+    }
+
+    adminKey = key;
+
+    try {
+      showLoading(true);
+      const res = await apiGet("/api/admin/summary");
+      if (!res.success) throw new Error(res.message || "Auth failed");
+
+      localStorage.setItem("sc_admin_key", adminKey);
+      document.getElementById("login-screen").classList.add("hidden");
+      document.getElementById("dashboard").classList.remove("hidden");
+
+      await loadAll();
+      showToast("Logged in as admin");
+    } catch (err) {
+      console.error(err);
+      adminKey = null;
+      errorEl.textContent = "Invalid admin key or server not reachable.";
+      errorEl.classList.remove("hidden");
+    } finally {
+      showLoading(false);
+    }
+  }
+
+  function logout() {
+    adminKey = null;
+    localStorage.removeItem("sc_admin_key");
+    document.getElementById("dashboard").classList.add("hidden");
+    document.getElementById("login-screen").classList.remove("hidden");
+    showToast("Logged out");
+  }
+
+  async function loadSummary() {
+    const res = await apiGet("/api/admin/summary");
+    if (!res.success) throw new Error(res.message || "Failed to load summary");
+    const d = res.data;
+    document.getElementById("sum-bookings").textContent = d.bookingCount;
+    document.getElementById("sum-c2c").textContent = d.c2cCount;
+    document.getElementById("sum-csc").textContent = d.cscCount;
+    document.getElementById("sum-contact").textContent = d.contactCount;
+    if (typeof d.productCount !== "undefined") {
+      document.getElementById("sum-products").textContent = d.productCount;
+    }
+
+    const txt =
+      "Bookings: " +
+      d.bookingCount +
+      " | C2C: " +
+      d.c2cCount +
+      " | CSC: " +
+      d.cscCount +
+      " | Contact: " +
+      d.contactCount +
+      (typeof d.productCount !== "undefined" ? " | Products: " + d.productCount : "");
+    const el = document.getElementById("summary-text");
+    el.textContent = txt;
+    el.classList.remove("hidden");
+  }
+
+  async function loadBookings() {
+    const res = await apiGet("/api/admin/bookings");
+    if (!res.success) throw new Error(res.message || "Failed to load bookings");
+
+    const rowsEl = document.getElementById("booking-rows");
+    rowsEl.innerHTML = "";
+
+    if (!res.bookings || res.bookings.length === 0) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td class="px-3 py-4 text-center text-slate-500" colspan="9">
+          No repair bookings yet.
+        </td>
+      `;
+      rowsEl.appendChild(tr);
+      return;
+    }
+
+    res.bookings.forEach((b, idx) => {
+      const tr = document.createElement("tr");
+      tr.className =
+        (idx % 2 === 0 ? "bg-slate-900/60" : "bg-slate-900/40") +
+        " hover:bg-slate-800/80 transition-colors";
+      tr.innerHTML = `
+        <td class="px-3 py-2 whitespace-nowrap">${fmtDate(b.createdAt)}</td>
+        <td class="px-3 py-2">${b.id || ""}</td>
+        <td class="px-3 py-2">${b.deviceType || ""}</td>
+        <td class="px-3 py-2">${b.dateSlot || ""}</td>
+        <td class="px-3 py-2">${b.contactPhone || ""}</td>
+        <td class="px-3 py-2">
+          <select id="status-${b._id}" class="border border-slate-700 bg-slate-900/80 rounded-md px-1.5 py-0.5 text-[11px] focus:outline-none focus:ring-1 focus:ring-primary text-slate-100">
+            ${STATUSES.map(
+              (s) =>
+                `<option value="${s}" ${
+                  b.status === s ? "selected" : ""
+                }>${s}</option>`
+            ).join("")}
+          </select>
+        </td>
+        <td class="px-3 py-2">
+          <input
+            id="est-${b._id}"
+            type="number"
+            class="w-24 border border-slate-700 bg-slate-900/80 rounded-md px-1.5 py-0.5 text-[11px] focus:outline-none focus:ring-1 focus:ring-primary text-slate-100"
+            value="${b.estimate ?? ""}"
+          />
+        </td>
+        <td class="px-3 py-2">
+          <input
+            id="final-${b._id}"
+            type="number"
+            class="w-24 border border-slate-700 bg-slate-900/80 rounded-md px-1.5 py-0.5 text-[11px] focus:outline-none focus:ring-1 focus:ring-primary text-slate-100"
+            value="${b.finalAmount ?? ""}"
+          />
+        </td>
+        <td class="px-3 py-2">
+          <button
+            class="px-2.5 py-1 bg-primary text-white rounded-md text-[11px] hover:bg-primary-dark transition-colors shadow-sm"
+            onclick="saveBooking('${b._id}')"
+          >
+            Save
+          </button>
+        </td>
+      `;
+      rowsEl.appendChild(tr);
+    });
+  }
+
+  async function saveBooking(id) {
+    try {
+      const status = document.getElementById("status-" + id).value;
+      const estVal = document.getElementById("est-" + id).value;
+      const finalVal = document.getElementById("final-" + id).value;
+
+      const body = {
+        status,
+        estimate: estVal === "" ? null : Number(estVal),
+        finalAmount: finalVal === "" ? null : Number(finalVal),
+      };
+
+      const res = await apiPatch("/api/admin/bookings/" + id, body);
+      if (!res.success) throw new Error(res.message || "Update failed");
+      showToast("Booking updated");
+    } catch (err) {
+      console.error(err);
+      showToast("Failed to update booking", true);
+    }
+  }
+
+  async function loadC2C() {
+    const res = await apiGet("/api/admin/c2c");
+    if (!res.success) throw new Error(res.message || "Failed to load C2C");
+
+    const rowsEl = document.getElementById("c2c-rows");
+    rowsEl.innerHTML = "";
+
+    if (!res.items || res.items.length === 0) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td class="px-3 py-4 text-center text-slate-500" colspan="6">
+          No card-to-cash requests yet.
+        </td>
+      `;
+      rowsEl.appendChild(tr);
+      return;
+    }
+
+    res.items.forEach((x, idx) => {
+      const tr = document.createElement("tr");
+      tr.className =
+        (idx % 2 === 0 ? "bg-slate-900/60" : "bg-slate-900/40") +
+        " hover:bg-slate-800/80 transition-colors";
+      tr.innerHTML = `
+        <td class="px-3 py-2 whitespace-nowrap">${fmtDate(x.createdAt)}</td>
+        <td class="px-3 py-2">${x.id || ""}</td>
+        <td class="px-3 py-2">${x.brand || ""}</td>
+        <td class="px-3 py-2">₹${fmtINR(x.amount)}</td>
+        <td class="px-3 py-2">${x.name || ""}</td>
+        <td class="px-3 py-2">${x.phone || ""}</td>
+      `;
+      rowsEl.appendChild(tr);
+    });
+  }
+
+  async function loadCSC() {
+    const res = await apiGet("/api/admin/csc");
+    if (!res.success) throw new Error(res.message || "Failed to load CSC");
+
+    const rowsEl = document.getElementById("csc-rows");
+    rowsEl.innerHTML = "";
+
+    if (!res.items || res.items.length === 0) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td class="px-3 py-4 text-center text-slate-500" colspan="7">
+          No CSC bookings yet.
+        </td>
+      `;
+      rowsEl.appendChild(tr);
+      return;
+    }
+
+    res.items.forEach((x, idx) => {
+      const tr = document.createElement("tr");
+      tr.className =
+        (idx % 2 === 0 ? "bg-slate-900/60" : "bg-slate-900/40") +
+        " hover:bg-slate-800/80 transition-colors";
+      tr.innerHTML = `
+        <td class="px-3 py-2 whitespace-nowrap">${fmtDate(x.createdAt)}</td>
+        <td class="px-3 py-2">${x.id || ""}</td>
+        <td class="px-3 py-2">${x.service || ""}</td>
+        <td class="px-3 py-2">${x.date || ""}</td>
+        <td class="px-3 py-2">${x.name || ""}</td>
+        <td class="px-3 py-2">${x.phone || ""}</td>
+        <td class="px-3 py-2 max-w-xs truncate" title="${x.notes || ""}">
+          ${x.notes || ""}
+        </td>
+      `;
+      rowsEl.appendChild(tr);
+    });
+  }
+
+  async function loadContact() {
+    const res = await apiGet("/api/admin/contacts");
+    if (!res.success) throw new Error(res.message || "Failed to load contacts");
+
+    const rowsEl = document.getElementById("contact-rows");
+    rowsEl.innerHTML = "";
+
+    if (!res.items || res.items.length === 0) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td class="px-3 py-4 text-center text-slate-500" colspan="7">
+          No contact messages yet.
+        </td>
+      `;
+      rowsEl.appendChild(tr);
+      return;
+    }
+
+    res.items.forEach((x, idx) => {
+      const tr = document.createElement("tr");
+      tr.className =
+        (idx % 2 === 0 ? "bg-slate-900/60" : "bg-slate-900/40") +
+        " hover:bg-slate-800/80 transition-colors";
+      tr.innerHTML = `
+        <td class="px-3 py-2 whitespace-nowrap">${fmtDate(x.createdAt)}</td>
+        <td class="px-3 py-2">${x.id || ""}</td>
+        <td class="px-3 py-2">${x.name || ""}</td>
+        <td class="px-3 py-2">${x.email || ""}</td>
+        <td class="px-3 py-2">${x.phone || ""}</td>
+        <td class="px-3 py-2 max-w-xs truncate" title="${x.subject || ""}">
+          ${x.subject || ""}
+        </td>
+        <td class="px-3 py-2 max-w-xs truncate" title="${x.message || ""}">
+          ${x.message || ""}
+        </td>
+      `;
+      rowsEl.appendChild(tr);
+    });
+  }
+
+  /* ---------- PRODUCTS ---------- */
+
+  function openProductPanel(product) {
+    editingProduct = product || null;
+    productImages = (product && product.images) ? [...product.images] : [];
+
+    const panel = document.getElementById("product-panel");
+    const titleEl = document.getElementById("product-panel-title");
+    const historyBlock = document.getElementById("prod-history-block");
+    const historyList = document.getElementById("prod-history-list");
+
+    document.getElementById("prod-id").value = product && product._id ? product._id : "";
+    document.getElementById("prod-title").value = product?.title || "";
+    document.getElementById("prod-category").value = product?.category || "";
+    document.getElementById("prod-description").value = product?.description || "";
+    document.getElementById("prod-price").value = product?.price ?? "";
+    document.getElementById("prod-offer-percentage").value = product?.offerPercentage ?? "";
+    document.getElementById("prod-stock").value = product?.stock ?? "";
+    document.getElementById("prod-hide").checked = !!product?.hideProduct;
+
+    if (product?.offerExpiry) {
+      const dt = new Date(product.offerExpiry);
+      const iso = dt.toISOString().slice(0, 16);
+      document.getElementById("prod-offer-expiry").value = iso;
+    } else {
+      document.getElementById("prod-offer-expiry").value = "";
+    }
+
+    titleEl.textContent = product ? "Edit Product" : "New Product";
+
+    // render images
+    renderImageChips();
+
+    // render price history
+    historyList.innerHTML = "";
+    const history = product?.priceHistory || [];
+    if (history.length) {
+      const latestFive = history.slice(-5).reverse();
+      latestFive.forEach(h => {
+        const li = document.createElement("li");
+        li.textContent = `₹${fmtINR(h.price)} • ${fmtDateShort(h.changedAt)}`;
+        historyList.appendChild(li);
+      });
+      historyBlock.classList.remove("hidden");
+    } else {
+      historyBlock.classList.add("hidden");
+    }
+
+    panel.classList.remove("translate-x-full");
+    panel.classList.add("animate-slide-in-right");
+  }
+
+  function closeProductPanel() {
+    const panel = document.getElementById("product-panel");
+    panel.classList.add("translate-x-full");
+    panel.classList.remove("animate-slide-in-right");
+    editingProduct = null;
+    productImages = [];
+    document.getElementById("product-form").reset();
+    document.getElementById("prod-images-chips").innerHTML = "";
+    document.getElementById("prod-history-block").classList.add("hidden");
+  }
+
+  function renderImageChips() {
+    const box = document.getElementById("prod-images-chips");
+    box.innerHTML = "";
+    productImages.forEach((url, idx) => {
+      const span = document.createElement("span");
+      span.className = "inline-flex items-center gap-1 px-2 py-1 rounded-full bg-slate-800 text-slate-100 border border-slate-600";
+      span.innerHTML = `
+        <span class="max-w-[160px] truncate">${url}</span>
+        <button type="button" class="text-[10px] text-slate-400 hover:text-rose-300" onclick="removeImageUrl(${idx})">✕</button>
+      `;
+      box.appendChild(span);
+    });
+  }
+
+  function addImageUrl() {
+    const input = document.getElementById("prod-image-input");
+    const val = input.value.trim();
+    if (!val) return;
+    productImages.push(val);
+    input.value = "";
+    renderImageChips();
+  }
+
+  function removeImageUrl(index) {
+    productImages.splice(index, 1);
+    renderImageChips();
+  }
+
+  async function loadProducts() {
+    try {
+      const res = await apiGet("/api/admin/products");
+      if (!res.success) throw new Error(res.message || "Failed to load products");
+
+      const rowsEl = document.getElementById("product-rows");
+      rowsEl.innerHTML = "";
+
+      const items = res.items || res.products || [];
+      if (!items.length) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td class="px-3 py-4 text-center text-slate-500" colspan="8">
+            No products added yet. Click "Add Product" to start.
+          </td>
+        `;
+        rowsEl.appendChild(tr);
+        document.getElementById("sum-products").textContent = 0;
+        return;
+      }
+
+      document.getElementById("sum-products").textContent = items.length;
+
+      items.forEach((p, idx) => {
+        const tr = document.createElement("tr");
+        const visible = isProductVisible(p);
+        const stockCls = stockBadgeClass(p);
+        tr.className =
+          (idx % 2 === 0 ? "bg-slate-900/60" : "bg-slate-900/40") +
+          " hover:bg-slate-800/80 transition-colors";
+        tr.innerHTML = `
+          <td class="px-3 py-2">
+            <div class="flex flex-col">
+              <span class="font-medium text-slate-100">${p.title || ""}</span>
+              <span class="text-[11px] text-slate-500 line-clamp-1">${p.description || ""}</span>
+            </div>
+          </td>
+          <td class="px-3 py-2 whitespace-nowrap">${p.category || ""}</td>
+          <td class="px-3 py-2 whitespace-nowrap">
+            <div class="flex flex-col">
+              <span class="text-slate-100">₹${fmtINR(p.price)}</span>
+            </div>
+          </td>
+          <td class="px-3 py-2 whitespace-nowrap">
+            <span class="text-[11px] text-slate-300">${computeOfferLabel(p)}</span>
+          </td>
+          <td class="px-3 py-2 whitespace-nowrap">
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] ${stockCls}">
+              ${Number(p.stock || 0)} in stock
+            </span>
+          </td>
+          <td class="px-3 py-2 whitespace-nowrap">
+            ${
+              visible
+                ? '<span class="text-[11px] text-emerald-300">Visible</span>'
+                : '<span class="text-[11px] text-slate-500">Hidden</span>'
+            }
+          </td>
+          <td class="px-3 py-2 whitespace-nowrap">${fmtDateShort(p.updatedAt || p.createdAt)}</td>
+          <td class="px-3 py-2 whitespace-nowrap">
+            <button
+              class="px-2.5 py-1 bg-slate-800 text-slate-100 rounded-md text-[11px] hover:bg-slate-700 border border-slate-600"
+              onclick='openProductPanel(${JSON.stringify(p).replace(/'/g, "&apos;")})'
+            >
+              Edit
+            </button>
+          </td>
+        `;
+        rowsEl.appendChild(tr);
+      });
+    } catch (err) {
+      console.error(err);
+      showToast("Failed to load products", true);
+    }
+  }
+
+  async function saveProduct(e) {
+    e.preventDefault();
+    try {
+      const id = document.getElementById("prod-id").value.trim();
+      const title = document.getElementById("prod-title").value.trim();
+      const category = document.getElementById("prod-category").value.trim();
+      const description = document.getElementById("prod-description").value.trim();
+      const priceVal = document.getElementById("prod-price").value;
+      const offerPercVal = document.getElementById("prod-offer-percentage").value;
+      const offerExpiryVal = document.getElementById("prod-offer-expiry").value;
+      const stockVal = document.getElementById("prod-stock").value;
+      const hideProduct = document.getElementById("prod-hide").checked;
+
+      const body = {
+        title,
+        category,
+        description,
+        price: priceVal === "" ? null : Number(priceVal),
+        offerPercentage: offerPercVal === "" ? 0 : Number(offerPercVal),
+        stock: stockVal === "" ? 0 : Number(stockVal),
+        hideProduct,
+        images: productImages,
+      };
+
+      if (offerExpiryVal) {
+        body.offerExpiry = new Date(offerExpiryVal).toISOString();
+      } else {
+        body.offerExpiry = null;
+      }
+
+      let res;
+      if (id) {
+        res = await apiPatch("/api/admin/products/" + id, body);
+      } else {
+        res = await apiPost("/api/admin/products", body);
+      }
+
+      if (!res.success) throw new Error(res.message || "Failed to save product");
+
+      showToast(id ? "Product updated" : "Product created");
+      closeProductPanel();
+      await loadProducts();
+      await loadSummary();
+    } catch (err) {
+      console.error(err);
+      showToast("Error saving product", true);
+    }
+  }
+
+  async function loadAll() {
+    try {
+      showLoading(true);
+      await Promise.all([
+        loadSummary(),
+        loadBookings(),
+        loadProducts(),
+        loadC2C(),
+        loadCSC(),
+        loadContact(),
+      ]);
+    } catch (err) {
+      console.error(err);
+      showToast("Failed to refresh dashboard", true);
+    } finally {
+      showLoading(false);
+    }
+  }
+
+  // Try auto-login with saved key
+  window.addEventListener("DOMContentLoaded", async () => {
+    const savedKey = localStorage.getItem("sc_admin_key");
+    if (!savedKey) return;
+    adminKey = savedKey;
+    try {
+      showLoading(true);
+      const res = await apiGet("/api/admin/summary");
+      if (!res.success) throw new Error("auth fail");
+      document.getElementById("login-screen").classList.add("hidden");
+      document.getElementById("dashboard").classList.remove("hidden");
+      await loadAll();
+      showToast("Welcome back, admin");
+    } catch (err) {
+      adminKey = null;
+      localStorage.removeItem("sc_admin_key");
+    } finally {
+      showLoading(false);
+    }
+  });
+</script>
+
+<style>
+  .tab-btn {
+    font-size: 0.75rem;
+    line-height: 1rem;
+    padding: 0.5rem 0.9rem;
+    border-bottom-width: 2px;
+    border-color: transparent;
+    border-radius: 0.75rem 0.75rem 0 0;
+    color: rgb(148 163 184);
+    background: transparent;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+  }
+  .tab-btn:hover {
+    color: rgb(129 140 248);
+    background-color: rgba(15, 23, 42, 0.7);
+  }
+  .tab-btn-active {
+    color: rgb(239 246 255);
+    border-color: #4F46E5;
+    background: linear-gradient(to top, rgba(15,23,42,0.95), rgba(15,23,42,0.9));
+  }
+  .hide-scrollbar {
+    scrollbar-width: none;
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+</style>
+
+</body>
+</html>

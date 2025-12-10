@@ -1,0 +1,1873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Super Computers - Mobile, Laptop Sales & Service | CSC Digital Seva</title>
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          'primary': '#4F46E5',
+          'primary-dark': '#4338CA',
+          'accent': '#10B981',
+          'visa': '#1A1F71',
+          'mc': '#EB001B',
+          'rupay': '#2D2A74'
+        },
+        keyframes: {
+          marquee: {
+            '0%': { transform: 'translateX(100%)' },
+            '100%': { transform: 'translateX(-100%)' }
+          },
+          float: {
+            '0%,100%': { transform: 'translateY(0)' },
+            '50%': { transform: 'translateY(-6px)' }
+          },
+          floatSlow: {
+            '0%,100%': { transform: 'translateY(0)' },
+            '50%': { transform: 'translateY(-4px)' }
+          },
+          floaty: {
+            '0%,100%': { transform: 'translate3d(0,0,0)' },
+            '25%': { transform: 'translate3d(4px,-4px,0)' },
+            '50%': { transform: 'translate3d(0,-6px,0)' },
+            '75%': { transform: 'translate3d(-4px,-2px,0)' }
+          },
+          fadeInUp: {
+            '0%': { opacity: 0, transform: 'translateY(14px)' },
+            '100%': { opacity: 1, transform: 'translateY(0)' }
+          },
+          fadeInDown: {
+            '0%': { opacity: 0, transform: 'translateY(-14px)' },
+            '100%': { opacity: 1, transform: 'translateY(0)' }
+          },
+          slideInRight: {
+            '0%': { opacity: 0, transform: 'translateX(40px)' },
+            '100%': { opacity: 1, transform: 'translateX(0)' }
+          },
+          scaleIn: {
+            '0%': { opacity: 0, transform: 'scale(0.92)' },
+            '100%': { opacity: 1, transform: 'scale(1)' }
+          },
+          pulseGlow: {
+            '0%,100%': { boxShadow: '0 0 0 0 rgba(16,185,129,0.0)' },
+            '50%': { boxShadow: '0 0 32px 0 rgba(16,185,129,0.5)' }
+          },
+          bounceSubtle: {
+            '0%,100%': { transform: 'translateY(0)' },
+            '50%': { transform: 'translateY(-3px)' }
+          },
+          marqueeShine: {
+            '0%': { backgroundPosition: '200% 0' },
+            '100%': { backgroundPosition: '-200% 0' }
+          },
+          spinSlow: {
+            '0%': { transform: 'rotate(0deg)' },
+            '100%': { transform: 'rotate(360deg)' }
+          },
+          wiggle: {
+            '0%,100%': { transform: 'rotate(0deg)' },
+            '25%': { transform: 'rotate(-2deg)' },
+            '75%': { transform: 'rotate(2deg)' }
+          },
+          pulseScale: {
+            '0%,100%': { transform: 'scale(1)' },
+            '50%': { transform: 'scale(1.04)' }
+          },
+          glowPulse: {
+            '0%,100%': { boxShadow: '0 0 0 rgba(79,70,229,0.0)' },
+            '50%': { boxShadow: '0 0 40px rgba(79,70,229,0.6)' }
+          },
+          shimmer: {
+            '0%': { transform: 'translateX(-100%)' },
+            '100%': { transform: 'translateX(100%)' }
+          },
+          orbit: {
+            '0%': { transform: 'rotate(0deg) translateX(10px) rotate(0deg)' },
+            '100%': { transform: 'rotate(360deg) translateX(10px) rotate(-360deg)' }
+          },
+          textReveal: {
+            '0%': { opacity: 0, transform: 'translateY(10px)' },
+            '100%': { opacity: 1, transform: 'translateY(0)' }
+          },
+          particleFloat: {
+            '0%,100%': { transform: 'translate3d(0,0,0)' },
+            '50%': { transform: 'translate3d(0,-6px,0)' }
+          }
+        },
+        animation: {
+          marquee: 'marquee 18s linear infinite',
+          float: 'float 3.5s ease-in-out infinite',
+          'float-slow': 'floatSlow 5.5s ease-in-out infinite',
+          floaty: 'floaty 6s ease-in-out infinite',
+          'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
+          'fade-in-down': 'fadeInDown 0.6s ease-out forwards',
+          'slide-in-right': 'slideInRight 0.6s ease-out forwards',
+          'scale-in': 'scaleIn 0.45s ease-out forwards',
+          'pulse-glow': 'pulseGlow 2.2s ease-in-out infinite',
+          'bounce-subtle': 'bounceSubtle 1.8s ease-in-out infinite',
+          'marquee-shine': 'marqueeShine 4s linear infinite',
+          'spin-slow': 'spinSlow 18s linear infinite',
+          wiggle: 'wiggle 0.9s ease-in-out infinite',
+          'pulse-scale': 'pulseScale 2s ease-in-out infinite',
+          'glow-pulse': 'glowPulse 2.4s ease-in-out infinite',
+          shimmer: 'shimmer 1.75s linear infinite',
+          orbit: 'orbit 10s linear infinite',
+          'text-reveal': 'textReveal 0.7s ease-out forwards',
+          'particle-float': 'particleFloat 5s ease-in-out infinite'
+        },
+        fontFamily: {
+          sans: ['Inter', 'system-ui', 'Segoe UI', 'Roboto', 'sans-serif']
+        }
+      }
+    }
+  }
+</script>
+
+<style>
+  :root {
+    --sc-primary: #4F46E5;
+    --sc-primary-dark: #4338CA;
+    --sc-accent: #10B981;
+  }
+
+  .page-section { 
+    display: none; 
+  }
+
+  .brand-pill { 
+    display:inline-flex; 
+    align-items:center; 
+    gap:8px; 
+    padding:4px 12px; 
+    border-radius:9999px; 
+    color:#fff; 
+    font-size:12px; 
+    font-weight:600; 
+    box-shadow:0 1px 2px rgba(0,0,0,0.12); 
+  }
+
+  /* Flip card styles */
+  .flip-wrap { perspective: 1200px; }
+  .flip-card { transform-style: preserve-3d; transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1); }
+  .flip-card.is-flipped { transform: rotateY(180deg); }
+  .flip-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+  .flip-back { transform: rotateY(180deg); }
+
+  /* Modal/Message Box Styles */
+  .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+  }
+  .modal-content {
+      background: white;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      max-width: 90%;
+      width: 400px;
+      transform: translateY(-50px);
+      transition: all 0.3s ease-out;
+  }
+  .modal-overlay.show .modal-content {
+      transform: translateY(0);
+  }
+
+  /* ---------- Global button look (premium, unified) ---------- */
+  button,
+  .btn {
+    border-radius: 9999px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    transition:
+      transform 0.18s ease,
+      box-shadow 0.18s ease,
+      background-color 0.18s ease,
+      color 0.18s ease,
+      border-color 0.18s ease;
+  }
+
+  button.btn-hover:hover,
+  .btn.btn-hover:hover,
+  button:hover,
+  .btn:hover {
+    transform: translateY(-1px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);
+  }
+
+  button:active,
+  .btn:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.25);
+  }
+
+  .btn-glow {
+    box-shadow: 0 0 0 rgba(79,70,229,0.0);
+  }
+
+  .btn-glow:hover {
+    box-shadow: 0 0 30px rgba(79,70,229,0.6);
+  }
+
+  /* ---------- Card hover (premium feel) ---------- */
+  .card-hover {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.25);
+  }
+
+  /* glass effect */
+  .glass {
+    background: rgba(15,23,42,0.45);
+    border: 1px solid rgba(148,163,184,0.4);
+    box-shadow: 0 18px 60px rgba(15,23,42,0.65);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  /* shine swipe */
+  .shine {
+    position: relative;
+    overflow: hidden;
+  }
+  .shine::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      120deg,
+      transparent 0%,
+      rgba(255,255,255,0.4) 40%,
+      rgba(255,255,255,0.2) 60%,
+      transparent 100%
+    );
+    transform: translateX(-100%);
+    animation: shimmer 1.75s linear infinite;
+    pointer-events: none;
+  }
+
+  /* gradient text */
+  .gradient-text {
+    background: linear-gradient(120deg, #A5B4FC, #22C55E, #38BDF8);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* tilt card */
+  .tilt-card {
+    transform-style: preserve-3d;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .tilt-card:hover {
+    transform: rotate3d(1,-1,0,6deg) translateY(-4px);
+    box-shadow: 0 24px 50px rgba(15,23,42,0.25);
+  }
+
+  /* sticky glow for header */
+  .sticky-glow {
+    transition: box-shadow 0.25s ease, background-color 0.25s ease;
+  }
+  .sticky-glow.is-scrolled {
+    background-color: rgba(15,23,42,0.95);
+    box-shadow: 0 18px 45px rgba(15,23,42,0.6);
+    color: white;
+  }
+  .sticky-glow.is-scrolled nav a.nav-pill-ghost {
+    color: #E5E7EB;
+  }
+
+  /* orbit dots in hero */
+  .orbit-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 9999px;
+    background: rgba(248,250,252,0.8);
+  }
+
+  /* simple ripple effect on buttons */
+  .ripple {
+    position: relative;
+    overflow: hidden;
+  }
+  .ripple::after {
+    content: "";
+    position: absolute;
+    border-radius: 9999px;
+    width: 0;
+    height: 0;
+    background: rgba(255,255,255,0.5);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .ripple:active::after {
+    width: 220%;
+    height: 220%;
+    top: 50%;
+    left: 50%;
+    transition: width 0.4s ease-out, height 0.4s ease-out, opacity 0.5s ease-out;
+    opacity: 0;
+  }
+
+  .brand-pill-orbit {
+    position: relative;
+  }
+</style>
+
+<link rel="icon" href="https://i.ibb.co/Xf9yV8WC/sc-logo.jpg" type="image/jpeg"/>
+<link rel="apple-touch-icon" href="https://i.ibb.co/Xf9yV8WC/sc-logo.jpg"/>
+</head>
+<body class="bg-gray-50 font-sans text-gray-800">
+
+<!-- Header -->
+<header class="sticky-glow sticky top-0 z-50 bg-white/80 backdrop-blur shadow-lg">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center" style="height:72px;">
+      <!-- Left: Logo + Brand -->
+      <div class="flex items-center flex-[0_0_320px] sm:flex-[0_0_360px] lg:flex-[0_0_420px]">
+        <a href="#" onclick="showPage('home')" class="flex items-center gap-3 group" aria-label="Super Computers Home">
+          <div class="h-12 sm:h-14 lg:h-16 w-12 sm:w-14 lg:w-16 rounded-xl bg-white ring-1 ring-gray-200 overflow-hidden flex items-center justify-center shadow-sm animate-spin-slow">
+            <img src="https://i.ibb.co/Xf9yV8WC/sc-logo.jpg" alt="Super Computers Logo" class="max-h-full max-w-full object-contain" referrerpolicy="no-referrer" loading="eager"/>
+          </div>
+          <div class="flex flex-col">
+            <span class="text-lg sm:text-xl lg:text-2xl font-extrabold text-primary group-hover:text-primary-dark leading-tight gradient-text animate-text-reveal">
+              Super Computers
+            </span>
+            <span class="text-[11px] sm:text-xs text-gray-500 uppercase tracking-[0.16em]">
+              Mobile • Laptop • CSC Seva
+            </span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Center: Nav -->
+      <nav class="hidden md:flex items-center justify-center flex-1 min-w-0 space-x-2 lg:space-x-4">
+        <a href="#" data-page="home" onclick="showPage('home')" class="nav-pill nav-pill-ghost nav-pill-active">Home</a>
+        <a href="#" data-page="services" onclick="showPage('services')" class="nav-pill nav-pill-ghost">Services</a>
+        <a href="#" data-page="shop" onclick="showPage('shop')" class="nav-pill nav-pill-ghost">Shop</a>
+        <a href="#" data-page="card2cash" onclick="showPage('card2cash')" class="nav-pill nav-pill-primary btn-hover btn-glow">Card-to-Cash</a>
+        <a href="#" data-page="book" onclick="showPage('book')" class="nav-pill nav-pill-accent btn-hover btn-glow">Book Repair</a>
+        <a href="#" data-page="csc" onclick="showPage('csc')" class="nav-pill nav-pill-outline">CSC Seva</a>
+        <a href="#" data-page="contact" onclick="showPage('contact')" class="nav-pill nav-pill-ghost">Contact</a>
+      </nav>
+
+      <!-- Right: Cart -->
+      <div class="hidden md:flex items-center justify-end flex-[0_0_80px] ml-3">
+        <button onclick="openCart()" class="relative bg-primary text-white px-4 py-2 rounded-full hover:bg-primary-dark flex items-center gap-2 text-sm ripple btn-hover btn-glow">
+          <span>Cart</span> 🛒
+          <span id="cart-count-nav" class="absolute -top-2 -right-2 bg-white text-primary text-xs font-bold rounded-full px-1.5 py-0.5">0</span>
+        </button>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button id="mobile-menu-button" class="md:hidden ml-auto text-gray-600 hover:text-primary focus:outline-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Top Scrolling Banner -->
+  <div id="top-marquee" class="bg-indigo-50 border-t border-indigo-100 shine">
+    <div class="overflow-hidden whitespace-nowrap py-2">
+      <div class="inline-flex items-center gap-8 animate-marquee px-4">
+        <span class="text-sm text-indigo-700 font-semibold flex items-center gap-2 marquee-text">
+          💳 Card-to-Cash: <span class="text-indigo-900">VISA 2%</span>, <span class="text-indigo-900">MasterCard/RuPay 2.3%</span>, instant payout with KYC.
+        </span>
+        <button onclick="showPage('card2cash')" class="text-xs bg-primary text-white px-3 py-1 rounded-full shadow hover:bg-primary-dark ripple btn-hover">
+          Learn More →
+        </button>
+        <span class="text-sm text-indigo-700.font-semibold">Mobile, Laptop, Desktop Sales & Service</span>
+        <span class="text-sm text-indigo-700 font-semibold">UPI / Card / Invoice Available</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden bg-white shadow-xl pb-2 border-t border-gray-100">
+    <a href="#" onclick="showPage('home')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary font-medium">Home</a>
+    <a href="#" onclick="showPage('services')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary font-medium">Services</a>
+    <a href="#" onclick="showPage('shop')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary font-medium">Shop</a>
+    <a href="#" onclick="showPage('card2cash')" class="block px-4 py-2 text-sm text-white bg-primary hover:bg-primary-dark font-semibold mt-1 rounded-lg mx-3 text-center">Card-to-Cash</a>
+    <a href="#" onclick="showPage('book')" class="block px-4 py-2 text-sm bg-accent text-white hover:bg-emerald-600 font-semibold mt-1 rounded-lg mx-3 text-center">Book Repair</a>
+    <a href="#" onclick="showPage('track')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary font-medium">Track Ticket</a>
+    <a href="#" onclick="showPage('csc')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary font-medium">CSC Digital Seva</a>
+    <a href="#".onclick="showPage('contact')" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-primary font-medium">Contact</a>
+  </div>
+</header>
+
+<!-- Mobile floating cart button -->
+<button onclick="openCart()" class="md:hidden fixed bottom-5 right-5 z-50 bg-primary text-white px-4 py-3 rounded-full shadow-lg flex items-center gap-2 ripple btn-hover btn-glow">
+  🛒
+  <span id="cart-count-fab" class="bg-white text-primary text-xs font-bold rounded-full px-2 py-0.5">0</span>
+</button>
+
+<!-- Cart Drawer -->
+<div id="cart-drawer" class="fixed inset-y-0 right-0 w-full max-w-md bg-white shadow-2xl transform translate-x-full.transition-transform duration-300 z-50 flex flex-col">
+  <div class="flex items-center justify-between px-4 py-3 border-b">
+    <h2 class="text-lg font-bold text-gray-900">Your Cart</h2>
+    <button onclick="closeCart()" class="text-gray-500 hover:text-gray-700 text-sm">Close ✖</button>
+  </div>
+  <div class="flex-1 overflow-y-auto p-4 space-y-4" id="cart-items">
+    <!-- Cart items rendered here -->
+  </div>
+  <div class="border-t px-4 py-3 space-y-2 bg-gray-50">
+    <div class="flex items-center justify-between">
+      <span class="text-sm text-gray-600">Subtotal</span>
+      <span id="cart-subtotal" class="text-lg font-semibold text-gray-900">₹0</span>
+    </div>
+    <button
+      onclick="checkout()"
+      class="w-full mt-2 bg-accent text-white font-semibold py-2 rounded-full hover:bg-emerald-600 btn-hover ripple"
+    >
+      Proceed to Pay
+    </button>
+    <p class="text-xs text-gray-500 mt-1 text-center">UPI and card payment supported. Invoice generated after payment.</p>
+  </div>
+</div>
+
+<!-- Main -->
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">
+
+<!-- HOME -->
+<section id="home" class="page-section">
+  <div class="relative rounded-2xl shadow-2xl mb-12 overflow-hidden glass animate-fade-in-up">
+    <div class="absolute inset-0 bg-gradient-to-br from-indigo-600 via-indigo-600 to-indigo-500 opacity-80"></div>
+    <canvas id="mocap-canvas" class="absolute inset-0 w-full h-full"></canvas>
+    <div class="absolute inset-0 backdrop-blur-[2px]">
+      <div class="absolute inset-0 bg-indigo-700/20"></div>
+    </div>
+    <div class="relative p-6 md:p-16 text-center text-white">
+      <div class="absolute top-6 right-6 hidden sm:flex gap-2">
+        <div class="orbit-dot animate-orbit"></div>
+        <div class="orbit-dot animate-orbit" style="animation-delay:0.6s"></div>
+        <div class="orbit-dot animate-orbit" style="animation-delay:1.2s"></div>
+      </div>
+      <p class="inline-flex items-center gap-2 text-xs uppercase tracking-[0.25em] bg-white/10 px-4 py-1 rounded-full mb-4 shine">
+        <span class="text-emerald-300">Trusted Mobile & Laptop Care</span>
+      </p>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 gradient-text">
+        Mobile, Laptop & Desktop
+        <span class="block text-emerald-300">Sales & Expert Service.</span>
+      </h1>
+      <p class="text-lg sm:text-xl mb-8 font-light max-w-2xl mx-auto">
+        Buy new devices, upgrade your setup, or repair mobiles & laptops with transparent pricing, original parts, and digital invoices.
+      </p>
+      <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <button onclick="showPage('book')" class="bg-accent hover:bg-emerald-600 text-white font-semibold py-3 px-8 rounded-full shadow-lg btn-hover ripple btn-glow">
+          Book Mobile / Laptop Repair
+        </button>
+        <button onclick="showPage('shop')" class="bg-white text-primary hover:bg-gray-100 font-semibold py-3 px-8 rounded-full shadow-lg btn-hover ripple">
+          Shop Accessories & Gadgets
+        </button>
+        <button onclick="showPage('card2cash')" class="bg-primary-dark hover:bg-indigo-800 text-white font-semibold py-3 px-8 rounded-full shadow-lg btn-hover ripple">
+          Card-to-Cash Service
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feature tiles -->
+  <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mb-12">
+    <div class="bg-white p-4 rounded-xl shadow-lg border-b-4 border-primary card-hover tilt-card animate-float-slow">
+      <span class="text-2xl mb-1 block">📱</span>
+      <p class="font-semibold text-sm">Mobile Repair</p>
+      <p class="text-[11px] text-gray-500 mt-1">Screens, batteries, charging</p>
+    </div>
+    <div class="bg-white p-4 rounded-xl shadow-lg border-b-4 border-primary card-hover tilt-card animate-float-slow" style="animation-delay:0.1s">
+      <span class="text-2xl mb-1 block">💻</span>
+      <p class="font-semibold text-sm">Laptop Repair</p>
+      <p class="text-[11px] text-gray-500 mt-1">Upgrades & services</p>
+    </div>
+    <div class="bg-white p-4 rounded-xl shadow-lg border-b-4 border-primary card-hover tilt-card animate-float-slow" style="animation-delay:0.2s">
+      <span class="text-2xl mb-1 block">🖥️</span>
+      <p class="font-semibold text-sm">Desktop Repair</p>
+      <p class="text-[11px] text-gray-500 mt-1">Custom builds & office</p>
+    </div>
+    <div class="bg-white p-4 rounded-xl shadow-lg border-b-4 border-accent card-hover tilt-card animate-float-slow" style="animation-delay:0.3s">
+      <span class="text-2xl mb-1 block">📹</span>
+      <p class="font-semibold text-sm">CCTV Install</p>
+      <p class="text-[11px] text-gray-500 mt-1">Home & shop security</p>
+    </div>
+    <div class="bg-white p-4 rounded-xl shadow-lg border-b-4 border-accent card-hover tilt-card animate-float-slow" style="animation-delay:0.4s">
+      <span class="text-2xl mb-1 block">🆔</span>
+      <p class="font-semibold text-sm">CSC / PVC Guidance</p>
+      <p class="text-[11px] text-gray-500 mt-1">Govt & ID services</p>
+    </div>
+    <button onclick="showPage('card2cash')" class="bg-gradient-to-r from-indigo-50 to-indigo-100 p-4 rounded-xl shadow-lg border-b-4 border-primary group card-hover animate-bounce-subtle">
+      <span class="text-2xl mb-1 block group-hover:animate-wiggle">💳</span>
+      <p class="font-semibold text-sm text-primary">Card-to-Cash</p>
+      <p class="text-[11px] text-indigo-700 mt-1">VISA 2% - MC/RuPay 2.3%</p>
+    </button>
+  </div>
+
+  <!-- UPI Flip Card + tiles -->
+  <div class="grid md:grid-cols-3 gap-6 mb-12">
+    <div class="bg-white p-6 rounded-xl shadow-lg border border-accent card-hover">
+      <h3 class="text-xl font-bold text-accent mb-3">Instant UPI Payment</h3>
+      <p class="text-sm text-gray-600 mb-4">Tap the card to flip and reveal the QR. Scan from any UPI app.</p>
+      <div id="upi-flip-1" class="flip-wrap mx-auto max-w-sm">
+        <div class="flip-card relative w-full h-64 rounded-xl shadow-md bg-gray-50 cursor-pointer">
+          <!-- Front -->
+          <div class="flip-face absolute inset-0 p-5 flex flex-col items-center justify-center text-center">
+            <div class="w-16 h-16 rounded-full bg-indigo-100 text-primary flex items-center justify-center mb-3 animate-pulse-scale">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7h4v4H3V7zm14 0h4v4h-4V7zM3 17h4v4H3v-4zm14 0h4v4h-4v-4zM9 5h6v14H9z" />
+              </svg>
+            </div>
+            <p class="text-primary font-bold text-lg">UPI Scan & Pay</p>
+            <p class="text-gray-600 text-sm mt-1">Click to show QR code</p>
+            <button type="button" class="mt-4 bg-primary text-white px-4 py-2 rounded-full hover:bg-primary-dark ripple btn-hover">
+              Show QR
+            </button>
+          </div>
+          <!-- Back -->
+          <div class="flip-face flip-back absolute inset-0 p-5 flex flex-col.items-center justify-center text-center">
+            <img
+              src="https://i.ibb.co/3mCtQrkK/Screenshot-2025-11-09-132539.png"
+              alt="UPI QR"
+              class="w-40 h-40 object-contain rounded-md ring-1 ring-gray-200 animate-pulse-scale"
+              referrerpolicy="no-referrer"
+              loading="eager"
+            />
+            <p class="text-gray-700 text-sm mt-3">Scan and pay securely via UPI.</p>
+            <p class="text-xs text-gray-500 mt-1">Tap anywhere to flip back.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bg-white p-6 rounded-xl shadow-lg card-hover">
+      <h3 class="text-xl font-bold text-primary mb-3">Book a Service Slot</h3>
+      <p class="text-gray-600 mb-4">Select a convenient time slot for mobile, laptop, or desktop repair.</p>
+      <button onclick="showPage('book')" class="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-2 rounded-full ripple btn-hover">
+        Book Now
+      </button>
+    </div>
+    <div class="bg-white p-6 rounded-xl shadow-lg card-hover">
+      <h3 class="text-xl font-bold text-primary mb-3">Track Your Ticket</h3>
+      <p class="text-gray-600 mb-4">Already booked? Track status using ticket ID or phone.</p>
+      <button onclick="showPage('track')" class="w-full bg-gray-900 hover:bg-black text-white font-semibold py-2 rounded-full ripple btn-hover">
+        Track Ticket
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services" class="page-section">
+  <!-- Hero header -->
+  <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-600 via-indigo-500 to-violet-500 text-white mb-8 card-hover">
+    <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.25) 0 2px, transparent 2px), radial-gradient(circle at 80% 30%, rgba(255,255,255,0.25) 0 2px, transparent 2px), radial-gradient(circle at 60% 80%, rgba(255,255,255,0.25) 0 2px, transparent 2px); background-size: 28px 28px, 32px 32px, 36px 36px;"></div>
+    <div class="px-6 md:px-10 lg:px-14 py-10 md:py-14 relative">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        <div class="animate-fade-in-up">
+          <p class="uppercase tracking-wider text-indigo-100 text-xs font-semibold mb-2">Professional & Transparent</p>
+          <h2 class="text-3xl md:text-4xl font-extrabold leading-tight gradient-text">End-to-End Mobile & IT Repair Services</h2>
+          <p class="mt-3 text-indigo-100 text-sm md:text-base">Mobiles, laptops, desktops, printers, CCTV. Detailed estimates, UPI payments, and clear timelines.</p>
+        </div>
+        <div class="flex items-center gap-2 animate-slide-in-right">
+          <div class="bg-white/10 backdrop-blur px-3 py-2 rounded-lg text-sm font-semibold">Same-day diagnosis</div>
+          <div class="bg-white/10 backdrop-blur px-3 py-2 rounded-lg text-sm font-semibold">Genuine parts</div>
+          <div class="bg-white/10 backdrop-blur px-3 py-2 rounded-lg text-sm font-semibold">UPI & card enabled</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category cards -->
+  <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+    <!-- Mobile Services -->
+    <div class="bg-white rounded-xl border border-gray-100 shadow-sm card-hover tilt-card">
+      <div class="p-6">
+        <div class="flex items-start justify-between">
+          <div>
+            <h3 class="text-xl font-bold text-gray-900">Mobile Repair & Service</h3>
+            <p class="text-sm text-gray-500 mt-0.5">Screens • Batteries • Ports • Software</p>
+          </div>
+          <div class="w-10 h-10 rounded-lg bg-indigo-50 text-primary flex items-center justify-center animate-float">📱</div>
+        </div>
+        <ul class="mt-4 space-y-2 text-sm text-gray-700">
+          <li class="flex items-start gap-2"><span class="text-accent mt-0.5">-</span> Screen & back glass replacement.</li>
+          <li class="flex items-start gap-2"><span class="text-accent mt-0.5">-</span> Battery, speaker, mic & camera fixes.</li>
+          <li class="flex items-start gap-2"><span class="text-accent mt-0.5">-</span> Charging port issues, data backup & OS refresh.</li>
+        </ul>
+        <button onclick="showPage('book')" class="mt-5 inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-full hover:bg-primary-dark ripple btn-hover">
+          Book mobile repair <span>→</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Laptop Services -->
+    <div class="bg-white rounded-xl border border-gray-100 shadow-sm card-hover tilt-card">
+      <div class="p-6">
+        <div class="flex items-start justify-between">
+          <div>
+            <h3 class="text-xl font-bold text-gray-900">Laptop Services</h3>
+            <p class="text-sm text-gray-500 mt-0.5">Diagnostics • OS • Upgrades • Parts</p>
+          </div>
+          <div class="w-10 h-10 rounded-lg bg-indigo-50 text-primary flex items-center justify-center animate-float">💻</div>
+        </div>
+        <ul class="mt-4 space-y-2 text-sm text-gray-700">
+          <li class="flex items-start gap-2"><span class="text-accent mt-0.5">-</span> Diagnostics, OS install, SSD & RAM upgrades.</li>
+          <li class="flex items-start gap-2"><span class="text-accent mt-0.5">-</span> Battery, screen, keyboard & hinge repair.</li>
+          <li class="flex items-start gap-2"><span class="text-accent mt-0.5">-</span> Cleaning and thermal servicing.</li>
+        </ul>
+        <button onclick="showPage('book')" class="mt-5 inline-flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-full hover:bg-primary-dark ripple btn-hover">
+          Book laptop repair <span>→</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Desktop & Custom Builds -->
+    <div class="bg-white rounded-xl border border-gray-100 shadow-sm card-hover tilt-card">
+      <div class="p-6">
+        <div class="flex items-start justify-between">
+          <div>
+            <h3 class="text-xl font-bold text-gray-900">Desktop & Custom Builds</h3>
+            <p class="text-sm text-gray-500 mt-0.5">Upgrades • Assembly • Setup</p>
+          </div>
+          <div class="w-10 h-10 rounded-lg bg-indigo-50 text-primary flex items-center justify-center animate-float">🖥️</div>
+        </div>
+        <ul class="mt-4 space-y-2 text-sm text-gray-700">
+          <li class="flex items-start gap-2"><span class="text-accent mt-0.5">-</span> Motherboard, PSU, RAM, storage upgrades.</li>
+          <li class="flex items-start gap-2"><span class="text-accent mt-0.5">-</span> Gaming / office PC assembly & configuration.</li>
+          <li class="flex items-start gap-2"><span class="text-accent mt-0.5">-</span> OS and driver setup, deep cleaning.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Printer & Cartridge -->
+    <div class="bg-white rounded-xl border border-gray-100 shadow-sm card-hover tilt-card">
+      <div class="p-6">
+        <div class="flex items-start justify-between">
+          <div>
+            <h3 class="text-xl font-bold text-gray-900">Printer & Cartridge</h3>
+            <p class="text-sm text-gray-500 mt-0.5">Setup • Jams • Rollers • Refills</p>
+          </div>
+          <div class="w-10 h-10 rounded-lg bg-indigo-50 text-primary flex items-center justify-center animate-float">🖨️</div>
+        </div>
+        <ul class="mt-4 space-y-2 text-sm text-gray-700">
+          <li class="flex items-start gap-2"><span class="text-accent mt-0.5">-</span> Driver/network setup, paper jam fixes.</li>
+          <li class="flex items-start gap-2"><span class="text-accent mt-0.5">-</span> Roller replacements, ink/toner issues.</li>
+          <li class="flex items-start gap-2"><span class="text-accent mt-0.5">-</span> Refills and compatible models.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CCTV Installation -->
+    <div class="bg-white rounded-xl border border-gray-100 shadow-sm card-hover tilt-card">
+      <div class="p-6">
+        <div class="flex items-start justify-between">
+          <div>
+            <h3 class="text-xl font-bold text-gray-900">CCTV Installation</h3>
+            <p class="text-sm text-gray-500 mt-0.5">DVR/NVR • Mobile View • AMC</p>
+          </div>
+          <div class="w-10 h-10 rounded-lg bg-indigo-50 text-primary flex items-center justify-center animate-float">📹</div>
+        </div>
+        <p class="mt-4 text-sm text-gray-700">Design, installation, mobile viewing, and AMC with DVR/NVR as per site survey.</p>
+      </div>
+    </div>
+
+    <!-- Biometric Repair -->
+    <div class="bg-white rounded-xl border border-gray-100 shadow-sm card-hover tilt-card">
+      <div class="p-6">
+        <div class="flex.items-start justify-between">
+          <div>
+            <h3 class="text-xl font-bold text-gray-900">Biometric Repair</h3>
+            <p class="text-sm text-gray-500 mt-0.5">Mantra • Morpho • SDK</p>
+          </div>
+          <div class="w-10 h-10 rounded-lg bg-indigo-50 text-primary flex items-center justify-center animate-float">🔐</div>
+        </div>
+        <ul class="mt-4 space-y-2 text-sm text-gray-700">
+          <li class="flex items-start gap-2"><span class="text-accent mt-0.5">-</span> Mantra/Morpho device diagnostics.</li>
+          <li class="flex items-start gap-2"><span class="text-accent mt-0.5">-</span> Driver/SDK setup and installation.</li>
+          <li class="flex items-start gap-2"><span class="text-accent mt-0.5">-</span> Cable replacements and cleaning.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- PVC Card Services (Compliance) -->
+    <div class="bg-white rounded-xl border border-gray-100 shadow-sm card-hover xl:col-span-3">
+      <div class="p-6">
+        <div class="flex items-start justify-between">
+          <div>
+            <h3 class="text-xl font-bold text-red-600">PVC Card Services (Compliance)</h3>
+            <p class="text-sm text-gray-500 mt-0.5">PAN • DL • RC • Voter ID</p>
+          </div>
+          <div class="w-10 h-10 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center animate-float">🆔</div>
+        </div>
+        <p class="mt-4 text-sm text-gray-700">
+          We assist with legal reprints for PAN, DL, RC, and Voter ID. For Aadhaar PVC, use UIDAI’s official portal.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Process + CTA -->
+  <div class="mt-10 grid md:grid-cols-2 gap-6">
+    <div class="bg-gray-50 rounded-xl border p-6 card-hover">
+      <h4 class="text-lg font-bold text-gray-900">How We Work</h4>
+      <ol class="mt-4 space-y-3 text-sm text-gray-700">
+        <li class="flex gap-3">
+          <span class="w-6 h-6 rounded-full bg-primary text-white text-xs flex items-center justify-center mt-0.5">1</span> Quick diagnostic and estimate shared for approval.
+        </li>
+        <li class="flex gap-3">
+          <span class="w-6 h-6 rounded-full bg-primary text-white text-xs flex items-center justify-center mt-0.5">2</span> Genuine parts used where required; timeline provided.
+        </li>
+        <li class="flex gap-3">
+          <span class="w-6 h-6 rounded-full bg-primary text-white text-xs flex items-center justify-center mt-0.5">3</span> UPI/card payment and invoice on completion.
+        </li>
+      </ol>
+    </div>
+    <div class="bg-white rounded-xl border shadow-sm p-6 card-hover">
+      <h4 class="text-lg font-bold text-gray-900">Ready to get started?</h4>
+      <p class="text-sm text-gray-600 mt-1">Book a convenient slot or talk to support for quick guidance.</p>
+      <div class="mt-4 flex flex-wrap gap-3">
+        <button onclick="showPage('book')" class="bg-accent text-white px-4 py-2 rounded-full font-semibold hover:bg-emerald-600 btn-hover ripple">
+          Book a repair slot
+        </button>
+        <button onclick="showPage('contact')" class="bg-gray-200 text-gray-900 px-4 py-2 rounded-full font-semibold hover:bg-gray-300 btn-hover ripple">
+          Contact support
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SHOP -->
+<section id="shop" class="page-section">
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="text-3xl font-extrabold text-primary border-b pb-2 gradient-text">Shop Accessories & Gadgets 🛒</h2>
+  </div>
+  <p class="text-sm text-gray-600 mb-4">Premium mobiles, laptop accessories, chargers, cables and more. UPI, card & GST invoice available.</p>
+  <div class="flex gap-2 mb-6">
+    <button id="tab-computers" class="px-4 py-2 rounded-full bg-primary text-white font-semibold btn-hover ripple" onclick="switchShopTab('computers')">Computers & Accessories</button>
+    <button id="tab-mobiles" class="px-4 py-2 rounded-full bg-gray-200 text-gray-800 font-semibold btn-hover ripple" onclick="switchShopTab('mobiles')">Mobiles & Accessories</button>
+  </div>
+  <div class="grid md:grid-cols-3 gap-3 mb-6">
+    <input id="shop-search" type="text" placeholder="Search items (e.g., mobile cover, SSD, charger)" class="p-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition md:col-span-2" oninput="renderProducts()">
+    <select id="shop-sort" class="p-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition" onchange="renderProducts()">
+      <option value="popular">Sort: Popular</option>
+      <option value="price-asc">Price: Low to High</option>
+      <option value="price-desc">Price: High to Low</option>
+      <option value="name-asc">Name: A → Z</option>
+    </select>
+  </div>
+  <div id="product-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  <p class="text-center mt-10 text-lg font-medium text-gray-700 border-t pt-6">
+    <span class="text-primary font-bold">UPI accepted</span>, cards accepted, GST invoice at checkout.
+  </p>
+</section>
+
+<!-- CARD-TO-CASH -->
+<section id="card2cash" class="page-section">
+  <div class="bg-white rounded-2xl shadow-2xl p-8 border border-indigo-100 card-hover">
+    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-6">
+      <div>
+        <h2 class="text-3xl font-extrabold text-primary mb-2 gradient-text">Card-to-Cash Service 💳➡️💵</h2>
+        <p class="text-gray-600">Instant cash withdrawal against your card with receipt and GST invoice as applicable. KYC required for compliance.</p>
+      </div>
+      <div class="flex flex-wrap gap-2 brand-pill-orbit">
+        <span class="brand-pill animate-orbit" style="background:#1A1F71">VISA</span>
+        <span class="brand-pill animate-orbit" style="background:#EB001B; animation-delay:0.4s;">MasterCard</span>
+        <span class="brand-pill animate-orbit" style="background:#2D2A74; animation-delay:0.8s;">RuPay</span>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-indigo-50 p-5 rounded-xl border border-indigo-100 card-hover">
+        <p class="text-sm text-indigo-700 font-semibold mb-2">VISA Cards</p>
+        <p class="text-3xl font-extrabold text-indigo-900">2%</p>
+        <p class="text-xs text-indigo-700 mt-1">Commission on withdrawal</p>
+      </div>
+      <div class="bg-rose-50 p-5 rounded-xl border border-rose-100 card-hover">
+        <p class="text-sm text-rose-700 font-semibold mb-2">MasterCard</p>
+        <p class="text-3xl font-extrabold text-rose-900">2.3%</p>
+        <p class="text-xs text-rose-700 mt-1">Commission on withdrawal</p>
+      </div>
+      <div class="bg-violet-50 p-5 rounded-xl border border-violet-100 card-hover">
+        <p class="text-sm text-violet-700 font-semibold mb-2">RuPay</p>
+        <p class="text-3xl font-extrabold text-violet-900">2.3%</p>
+        <p class="text-xs text-violet-700 mt-1">Commission on withdrawal</p>
+      </div>
+    </div>
+
+    <div class="mt-6 grid md:grid-cols-2 gap-6">
+      <div class="bg-gray-50 p-5 rounded-xl border card-hover">
+        <h3 class="text-lg font-bold text-gray-800 mb-2">How it works</h3>
+        <ul class="list-disc list-inside text-gray-600 text-sm space-y-1">
+          <li>Bring your card and valid ID for KYC.</li>
+          <li>Tap/Swipe/Chip authorization at the POS.</li>
+          <li>Instant cash payout with receipt; invoice available.</li>
+        </ul>
+      </div>
+      <div class="bg-gray-50 p-5 rounded-xl border card-hover">
+        <h3 class="text-lg font-bold text-gray-800 mb-2">Request a Slot</h3>
+        <form id="c2c-form" onsubmit="handleC2C(event)">
+          <div class="grid grid-cols-2 gap-3">
+            <select id="c2c_brand" class="p-3 border rounded-lg" required>
+              <option value="">Card Brand</option>
+              <option value="VISA">VISA</option>
+              <option value="MASTERCARD">MasterCard</option>
+              <option value="RUPAY">RuPay</option>
+            </select>
+            <input id="c2c_amount" type="number" min="500" step="100" class="p-3 border rounded-lg" placeholder="Amount (₹)" required>
+          </div>
+          <input id="c2c_name" class="mt-3 p-3 border rounded-lg w-full" placeholder="Full Name" required>
+          <input id="c2c_phone" class="mt-3 p-3 border rounded-lg w-full" placeholder="Phone" required>
+          <button type="submit" class="mt-4 w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3 rounded-full ripple btn-hover btn-glow">
+            Request Appointment
+          </button>
+          <p class="text-[11px] text-gray-500 mt-2">
+            Note: Service subject to bank/issuer rules. Government ID and receipt signature required.
+          </p>
+        </form>
+        <div id="c2c-msg" class="hidden mt-3 p-3 rounded-lg text-sm"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOK -->
+<section id="book" class="page-section">
+  <h2 class="text-3xl font-extrabold text-primary mb-6 border-b pb-2 gradient-text">Book Your Repair Slot 📅</h2>
+  <div class="bg-white p-8 rounded-xl shadow-xl max-w-xl mx-auto card-hover">
+    <form id="booking-form" onsubmit="handleBooking(event)">
+      <div class="mb-4">
+        <label class="block text-gray-700 font-bold mb-2" for="device_type">1. Select Device & Issue</label>
+        <select id="device_type" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition" required>
+          <option value="">-- Select Device Type --</option>
+          <option value="mobile">Mobile Service</option>
+          <option value="laptop">Laptop Service</option>
+          <option value="desktop">Desktop Service</option>
+          <option value="printer">Printer Service</option>
+          <option value="cctv">CCTV Survey/Installation</option>
+        </select>
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 font-bold mb-2" for="date_slot">2. Choose Time Slot</label>
+        <input type="date" id="date_slot" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition" required>
+      </div>
+      <div class="mb-4">
+        <label class="block text-gray-700 font-bold mb-2" for="description">3. Issue Details</label>
+        <textarea id="description" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition" required></textarea>
+      </div>
+      <div class="mb-6">
+        <label class="block text-gray-700 font-bold mb-2" for="contact_phone">4. Contact (Phone/Email)</label>
+        <input type="tel" id="contact_phone" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition" required>
+      </div>
+      <button type="submit" class="w-full bg-accent hover:bg-emerald-600 text-white font-semibold py-3 rounded-full shadow-md ripple btn-hover btn-glow">
+        Confirm Booking
+      </button>
+    </form>
+  </div>
+  <div id="booking-message" class="mt-6 p-4 text-center rounded-lg hidden bg-blue-100 text-blue-700 font-semibold"></div>
+</section>
+
+<!-- TRACK -->
+<section id="track" class="page-section">
+  <h2 class="text-3xl font-extrabold text-primary mb-6 border-b pb-2 gradient-text">Track Your Repair Ticket 🔍</h2>
+  <div class="bg-white p-6 rounded-xl.shadow-xl max-w-xl mx-auto card-hover">
+    <form id="tracking-form" onsubmit="handleTrack(event)">
+      <label class="block text-gray-700 font-bold.mb-2" for="ticket_id">Enter Ticket ID or Phone</label>
+      <input id="ticket_id" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition mb-4" placeholder="TF2025-12345 or 9876543210" required>
+      <button type="submit" class="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3 rounded-full shadow-md ripple btn-hover">
+        Check Status
+      </button>
+    </form>
+    <div id="tracking-result" class="hidden mt-6 bg-gray-50 border border-gray-200 rounded-lg p-4">
+      <p class="text-sm text-gray-600 mb-1">Ticket ID: <span id="track-id" class="font-semibold"></span></p>
+      <p class="text-sm text-gray-700 mb-1">Status: <span id="track-status" class="font-semibold text-primary-dark"></span></p>
+      <p class="text-sm text-gray-700 mb-1">Notes: <span id="track-notes"></span></p>
+      <p class="text-sm text-gray-700">Estimated Amount: <span id="track-estimate" class="font-semibold"></span></p>
+    </div>
+    <div id="tracking-error" class="hidden mt-4 bg-red-50 text-red-700 text-sm p-3 rounded-lg"></div>
+  </div>
+</section>
+
+<!-- CSC -->
+<section id="csc" class="page-section">
+  <!-- Hero -->
+  <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-600 text-white mb-8 card-hover">
+    <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.25) 0 2px, transparent 2px), radial-gradient(circle at 80% 30%, rgba(255,255,255,0.25) 0 2px, transparent 2px), radial-gradient(circle at 60% 80%, rgba(255,255,255,0.25) 0 2px, transparent 2px); background-size: 28px 28px, 32px 32px, 36px 36px;"></div>
+    <div class="px-6 md:px-10 lg:px-14 py-10 md:py-14 relative">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        <div class="animate-fade-in-up">
+          <p class="uppercase tracking-wider text-blue-100 text-xs font-semibold mb-2">CSC VLE - Trusted public services</p>
+          <h2 class="text-3xl md:text-4xl font-extrabold leading-tight">CSC Digital Seva Kendra</h2>
+          <p class="mt-3 text-blue-100 text-sm md:text-base">Government, financial, and utility services delivered with compliance and transparency.</p>
+        </div>
+        <div class="flex items-center gap-2 animate-slide-in-right">
+          <div class="bg-white/10 backdrop-blur px-3 py-2 rounded-lg text-sm font-semibold">VLE ID: CSC-TF-12345</div>
+          <div class="bg-white/10 backdrop-blur px-3 py-2 rounded-lg text-sm font-semibold">License: Active</div>
+          <div class="bg-white/10 backdrop-blur px-3 py-2 rounded-lg text-sm font-semibold">Timings: 9:00–18:00</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Services grid -->
+  <h3 class="text-2xl font-bold text-gray-800 mb-4">Popular CSC Services</h3>
+  <div class="grid md:grid-cols-3 gap-6 mb-10">
+    <div class="group bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 card-hover">
+      <div class="flex items-center justify-between">
+        <h4 class="text-lg font-semibold text-gray-800">e-Governance & IDs</h4>
+        <span class="text-2xl">🆔</span>
+      </div>
+      <ul class="mt-3 text-sm text-gray-600 space-y-1">
+        <li>- PAN new/corrections</li>
+        <li>- Passport guidance</li>
+        <li>- Voter services</li>
+        <li>- e-District certificates</li>
+      </ul>
+      <button onclick="prefillCSC('pan')" class="mt-4 w-full bg-primary text-white py-2 rounded-full font-semibold hover:bg-primary-dark transition ripple btn-hover">
+        Get started
+      </button>
+    </div>
+    <div class="group bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 card-hover">
+      <div class="flex items-center justify-between">
+        <h4 class="text-lg font-semibold text-gray-800">Financial Inclusion</h4>
+        <span class="text-2xl">🏦</span>
+      </div>
+      <ul class="mt-3 text-sm text-gray-600 space-y-1">
+        <li>- Banking Correspondent</li>
+        <li>- AEPS / DigiPay</li>
+        <li>- Pension enrollments</li>
+        <li>- Insurance enrollments</li>
+      </ul>
+      <button onclick="prefillCSC('aeps')" class="mt-4 w-full bg-primary text-white py-2 rounded-full font-semibold hover:bg-primary-dark transition ripple btn-hover">
+        Get started
+      </button>
+    </div>
+    <div class="group bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 card-hover">
+      <div class="flex items-center justify-between">
+        <h4 class="text-lg font-semibold text-gray-800">Utilities & Education</h4>
+        <span class="text-2xl">📚</span>
+      </div>
+      <ul class="mt-3 text-sm text-gray-600 space-y-1">
+        <li>- BBPS bill payments</li>
+        <li>- LPG booking</li>
+        <li>- IRCTC assistance</li>
+        <li>- Digital literacy courses</li>
+      </ul>
+      <button onclick="prefillCSC('bbps')" class="mt-4 w-full bg-primary text-white py-2 rounded-full font-semibold hover:bg-primary-dark transition ripple btn-hover">
+        Get started
+      </button>
+    </div>
+  </div>
+
+  <!-- Guided booking -->
+  <div class="grid lg:grid-cols-3 gap-6">
+    <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-xl border border-gray-100 card-hover">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-2xl font-bold text-primary">Book a CSC Appointment</h3>
+        <span class="text-xs text-gray-500">Typical time: 10–20 minutes</span>
+      </div>
+      <form id="csc-booking-form" onsubmit="handleCscBooking(event)">
+        <!-- Stepper -->
+        <div class="flex items-center gap-2 mb-5">
+          <div class="w-7 h-7 rounded-full bg-primary text-white text-xs flex items-center justify-center">1</div>
+          <p class="text-sm font-semibold text-gray-700">Choose service</p>
+          <div class="h-px bg-gray-300 flex-1"></div>
+          <div class="w-7 h-7 rounded-full bg-gray-200 text-gray-700 text-xs flex items-center justify-center">2</div>
+          <p class="text-sm text-gray-500">Pick slot</p>
+          <div class="h-px bg-gray-300 flex-1"></div>
+          <div class="w-7 h-7 rounded-full bg-gray-200 text-gray-700 text-xs flex items-center justify-center">3</div>
+          <p class="text-sm text-gray-500">Your details</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-gray-700 font-medium mb-1" for="csc_service">Required Service</label>
+            <select id="csc_service" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition" required>
+              <option value="">-- Select CSC Service --</option>
+              <option value="pan">PAN Application / Correction</option>
+              <option value="aeps">AEPS / DigiPay</option>
+              <option value="bbps">Bill Payment (BBPS)</option>
+              <option value="passport">Passport Guidance</option>
+              <option value="voter">Voter Services</option>
+              <option value="edistrict">e-District Certificates</option>
+              <option value="other">Other CSC service</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-gray-700 font-medium mb-1" for="csc_date">Preferred Date & Time</label>
+            <input type="datetime-local" id="csc_date" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition" required>
+          </div>
+        </div>
+        <div class="mt-4 grid md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-gray-700 font-medium mb-1" for="csc_name">Full Name</label>
+            <input type="text" id="csc_name" placeholder="e.g., Rahul Sharma" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition" required>
+          </div>
+          <div>
+            <label class="block text-gray-700 font-medium mb-1" for="csc_phone">Phone (WhatsApp preferred)</label>
+            <input type="tel" id="csc_phone" placeholder="+91XXXXXXXXXX" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition" required>
+          </div>
+        </div>
+        <div class="mt-4">
+          <label class="block text-gray-700 font-medium mb-1" for="csc_notes">Notes (optional)</label>
+          <textarea id="csc_notes" rows="3" placeholder="Briefly describe your requirement or any reference number..." class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary transition"></textarea>
+        </div>
+        <div class="mt-4 flex items-start gap-3 bg-blue-50 border border-blue-100 p-3 rounded-lg">
+          <span class="text-xl">✅</span>
+          <p class="text-sm text-blue-800">You will receive an SMS/WhatsApp confirmation with your appointment token and document checklist.</p>
+        </div>
+        <button type="submit" class="mt-6 w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3 rounded-full shadow-md active:scale-[0.99] ripple btn-hover btn-glow">
+          Secure CSC Slot
+        </button>
+      </form>
+      <div id="csc-booking-message" class="mt-6 p-4 text-center rounded-lg hidden bg-blue-100 text-blue-700 font-semibold"></div>
+    </div>
+
+    <!-- Sidebar: Checklist and FAQ -->
+    <aside class="space-y-6">
+      <div class="bg-white p-5 rounded-xl shadow-md border border-gray-100 card-hover">
+        <h4 class="text-lg font-bold text-gray-800 mb-2">Bring these documents</h4>
+        <ul class="text-sm text-gray-700 space-y-1">
+          <li>- Government ID (Aadhaar/PAN/Driving License).</li>
+          <li>- Passport photo if required by service.</li>
+          <li>- Address proof for address-related updates.</li>
+          <li>- Old reference IDs for corrections.</li>
+        </ul>
+      </div>
+      <div class="bg-white p-5 rounded-xl shadow-md border border-gray-100 card-hover">
+        <h4 class="text-lg font-bold text-gray-800 mb-2">Service timings</h4>
+        <p class="text-sm text-gray-700">Mon–Sat: 9:00 AM – 6:00 PM. Sundays and public holidays as per notice.</p>
+        <p class="text-xs text-gray-500 mt-1">Walk-ins allowed; priority given to booked slots.</p>
+      </div>
+      <div class="bg-white p-5 rounded-xl shadow-md border border-gray-100 card-hover">
+        <h4 class="text-lg font-bold text-gray-800 mb-2">Compliance note</h4>
+        <p class="text-sm text-gray-700">All services are delivered through the official Digital Seva ecosystem under CSC SPV guidelines. No unauthorized services are offered.</p>
+      </div>
+      <div class="bg-white p-5 rounded-xl shadow-md border border-gray-100 card-hover">
+        <h4 class="text-lg font-bold text-gray-800 mb-2">Quick FAQ</h4>
+        <ul class="text-sm text-gray-700 space-y-1">
+          <li>- Can I pay via UPI? Yes, UPI/card accepted with receipt.</li>
+          <li>- How long does it take? Most services 10–20 minutes.</li>
+          <li>- Will I get an acknowledgment? Yes, token + receipt.</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="page-section">
+  <h2 class="text-3xl font-extrabold text-primary mb-6 border-b pb-2 gradient-text">Contact Us</h2>
+
+  <div class="grid lg:grid-cols-3 gap-6">
+    <!-- Contact Form -->
+    <div class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg card-hover">
+      <form id="contact-form" onsubmit="handleContact(event)">
+        <div class="grid md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+            <input id="c_name" type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" placeholder="Rahul Sharma" required>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+            <input id="c_email" type="email" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" placeholder="rahul.sharma@example.com" required>
+          </div>
+          <div>
+            <label class="block text-sm font-medium.text-gray-700 mb-1">Phone Number (optional)</label>
+            <input id="c_phone" type="tel" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" placeholder="+91-98765-43210">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+            <input id="c_subject" type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" placeholder="Product inquiry / Service support" required>
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <label class="block text-sm font-medium text-gray-700.mb-1">Message</label>
+          <textarea id="c_message" rows="5" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" placeholder="Describe your question or issue..." required></textarea>
+        </div>
+
+        <div class="mt-4">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Attachment (optional)</label>
+          <input id="c_file" type="file" accept=".png,.jpg,.jpeg,.pdf" class="w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-primary-dark">
+          <p class="text-xs text-gray-500 mt-1">Accepted: PNG, JPG, PDF. Max 5 MB.</p>
+        </div>
+
+        <div class="mt-6 flex items-center gap-3">
+          <button type="submit" class="bg-primary hover:bg-primary-dark text-white font-semibold py-3 px-6 rounded-full ripple btn-hover btn-glow">Send Message</button>
+          <span id="contact-privacy" class="text-xs text-gray-500">By submitting, you agree to our data handling as described below.</span>
+        </div>
+      </form>
+
+      <div id="contact-msg" class="hidden mt-4 p-3 rounded-lg text-sm"></div>
+
+      <div class="mt-6 bg-gray-50 p-4 rounded-lg border">
+        <p class="text-sm text-gray-600">
+          We collect your name, email, phone, and message to respond to your inquiry. Files are used only for troubleshooting and are retained per our retention policy. Do not upload sensitive IDs or payment card numbers. You can request deletion by contacting privacy@supercomputers.example.
+        </p>
+      </div>
+    </div>
+
+    <!-- Contact Details -->
+    <div class="bg-white p-6 rounded-xl shadow-lg h-fit card-hover">
+      <h3 class="text-xl font-bold text-primary mb-3">Contact Details</h3>
+      <p class="text-sm text-gray-700"><span class="font-semibold">Name:</span> Siva Kumar K </p>  
+      <p class="text-sm text-gray-700"><span class="font-semibold">Email:</span> supercomputers8688@gmail.com</p>
+      <p class="text-sm text-gray-700 mt-1"><span class="font-semibold">Phone:</span> +91-8688188948</p>
+      <p class="text-sm text-gray-700 mt-1"><span class="font-semibold">Office:</span> Near zphs Boys High School,Galiveedu,Annamyya Dist,AP-516267</p>
+      <p class="text-sm.text-gray-700 mt-1"><span class="font-semibold">Hours:</span> Mon–Sat, 9:30 AM – 7:00 PM IST</p>
+
+      <div class="mt-5">
+        <h4 class="text-sm font-bold text-gray-800 mb-2">Social Media</h4>
+        <div class="flex items-center gap-3 flex-wrap">
+          <a href="https://www.facebook.com/groups/1048981532145689/?ref=share&mibextid=NSMWBT" target="_blank" class="text-blue-600 hover:underline text-sm">Facebook</a>
+          <a href="https://youtube.com/@sivakumarkamasani4115?si=wWuSmNjaQfYxDqhd" target="_blank" class="text-gray-900 hover:underline text-sm">YouTube</a>
+          <a href="https://www.linkedin.com/in/kamasani-sivakumar-37b8882a4?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" class="text-blue-700 hover:underline text-sm">LinkedIn</a>
+          <a href="https://www.instagram.com/sivakumar948?igsh=MTd5MHIwZHBnYW42dQ==" target="_blank" class="text-pink-600 hover:underline text-sm">Instagram</a>
+        </div>
+      </div>
+
+      <div class="mt-5">
+        <h4 class="text-sm font-bold text-gray-800 mb-2">Support Options</h4>
+        <div class="grid grid-cols-2 gap-2">
+          <a href="#faq" onclick="showFAQ()" class="bg-gray-100 text-gray-800 text-center py-2 rounded-full hover:bg-gray-200 text-sm ripple btn-hover">Help Center / FAQ</a>
+          <a href="https://wa.me/918495098948" target="_blank" class="bg-green-500 text-white text-center py-2 rounded-full hover:bg-green-600 text-sm ripple btn-hover">WhatsApp</a>
+          <a href="http://t.me/SUPER_COMPUTERS_GALIVEEDU" target="_blank" class="bg-blue-500 text-white text-center py-2 rounded-full hover:bg-blue-600 text-sm col-span-2 ripple btn-hover">Telegram</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Map -->
+  <div class="mt-6 bg-white p-2 rounded-xl shadow-lg card-hover">
+    <iframe
+      title="Office Location - SUPER COMPUTERS"
+      class="w-full h-72 rounded-lg"
+      style="border:0"
+      loading="lazy"
+      allowfullscreen
+      referrerpolicy="no-referrer-when-downgrade"
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3870.9371669063853!2d78.509418!3d14.0217388!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bb3ad2fe88f9f47%3A0x4be067431ba7b69d!2sSUPER%20COMPUTERS!5e0!3m2!1sen!2sin!4v1762611520986!5m2!1sen!2sin">
+    </iframe>
+  </div>
+
+  <!-- FAQ -->
+  <div id="faq" class="mt-8 bg-white p-6 rounded-xl shadow-lg card-hover">
+    <h3 class="text-xl font-bold text-primary mb-3">Help Center / FAQ</h3>
+    <ul class="list-disc list-inside text-gray-700 text-sm space-y-1">
+      <li>How to book a mobile or laptop repair slot?</li>
+      <li>What is the warranty on parts?</li>
+      <li>Do you provide GST invoices for shop purchases?</li>
+      <li>What payment methods are accepted?</li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<!-- Footer -->
+<footer class="bg-gray-900 text-white mt-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+      <div>
+        <h4 class="font-bold text-lg mb-4 text-primary">Services</h4>
+        <ul class="space-y-2 text-sm text-gray-300">
+          <li><a href="#" onclick="showPage('services')" class="hover:text-white">Mobile Repair</a></li>
+          <li><a href="#" onclick="showPage('services')" class="hover:text-white">Laptop/Desktop Repair</a></li>
+          <li><a href="#" onclick="showPage('services')" class="hover:text-white">Printer & CCTV</a></li>
+          <li><a href="#" onclick="showPage('csc')" class="hover:text-white">CSC Digital Seva</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-bold text-lg mb-4 text-primary">Quick Links</h4>
+        <ul class="space-y-2 text-sm text-gray-300">
+          <li><a href="#" onclick="showPage('shop')" class="hover:text-white">Shop Accessories</a></li>
+          <li><a href="#" onclick="showPage('card2cash')" class="hover:text-white">Card-to-Cash Service</a></li>
+          <li><a href="#" onclick="showPage('book')" class="hover:text-white">Book Repair Slot</a></li>
+          <li><a href="#" onclick="showPage('track')" class="hover:text-white">Track Repair Ticket</a></li>
+          <li><a href="#" onclick="showPage('contact')" class="hover:text-white">Contact Us</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-bold text-lg mb-4 text-primary">Policies & Legal</h4>
+        <ul class="space-y-2 text-sm text-gray-300">
+          <li><a href="#" class="hover:text-white">Returns & Warranty</a></li>
+          <li><a href="#" class="hover:text-white">Service Terms & Conditions</a></li>
+          <li><a href="#" class="hover:text-white">Data Privacy Policy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-bold text-lg mb-4 text-primary">Payments</h4>
+        <p class="text-sm text-gray-300 mb-2">UPI, Cards, and standard digital payments accepted. Transparent invoicing.</p>
+        <div class="text-xl space-x-2 text-accent animate-pulse-scale"><span>💰</span><span>💳</span><span>📱</span></div>
+      </div>
+    </div>
+    <div class="mt-8 pt-6 border-t border-gray-800 text-center">
+      <p class="text-sm text-gray-500">&copy; 2025 Super Computers. All rights reserved. | <span class="font-semibold text-white">Mobile & Laptop sales and service with digital payments.</span></p>
+    </div>
+  </div>
+</footer>
+
+<!-- Custom Modals / Message Boxes -->
+<div id="message-modal-overlay" class="modal-overlay">
+  <div id="message-modal-content" class="modal-content">
+    <div id="message-icon" class="mb-4 flex justify-center"></div>
+    <p id="message-text" class="text-center text-gray-800 text-lg mb-6 font-medium"></p>
+    <div id="message-actions" class="flex justify-end gap-3">
+      <button id="message-cancel" class="hidden bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-full hover:bg-gray-300">Cancel</button>
+      <button id="message-ok" class="bg-primary text-white font-semibold py-2 px-4 rounded-full hover:bg-primary-dark">OK</button>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script>
+  const API_BASE = "http://localhost:5000"; // change to your Render URL in production
+
+  // MODAL/MESSAGE BOX LOGIC
+  const modalOverlay = document.getElementById('message-modal-overlay');
+  const modalContent = document.getElementById('message-modal-content');
+  const modalText = document.getElementById('message-text');
+  const modalIcon = document.getElementById('message-icon');
+  const modalOk = document.getElementById('message-ok');
+  const modalCancel = document.getElementById('message-cancel');
+
+  let currentConfirmationCallback = null;
+
+  function closeModal() {
+    modalOverlay.classList.remove('show');
+    modalOverlay.style.display = 'none';
+    modalCancel.onclick = null;
+    modalOk.onclick = null;
+    modalCancel.classList.add('hidden');
+    modalOk.textContent = 'OK';
+    currentConfirmationCallback = null;
+  }
+
+  function showMessage(message, type = 'info') {
+    const iconMap = {
+      info: { color: 'text-primary', svg: '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>' },
+      success: { color: 'text-accent', svg: '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>' },
+      error: { color: 'text-red-500', svg: '<svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>' },
+    };
+
+    const { color, svg } = iconMap[type] || iconMap['info'];
+    modalIcon.innerHTML = `<div class="p-3 rounded-full ${color.replace('text-', 'bg-')}/10 ${color}">${svg}</div>`;
+    modalText.textContent = message;
+    modalOk.onclick = closeModal;
+
+    modalOverlay.style.display = 'flex';
+    setTimeout(() => modalOverlay.classList.add('show'), 10);
+  }
+
+  function showConfirmation(message, callback) {
+    currentConfirmationCallback = callback;
+    modalIcon.innerHTML = '<div class="p-3 rounded-full bg-yellow-100 text-yellow-600"><svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg></div>';
+    modalText.textContent = message;
+    modalOk.textContent = 'Confirm';
+
+    modalOk.onclick = () => { closeModal(); if(currentConfirmationCallback) currentConfirmationCallback(true); };
+    modalCancel.onclick = () => { closeModal(); if(currentConfirmationCallback) currentConfirmationCallback(false); };
+    modalCancel.classList.remove('hidden');
+
+    modalOverlay.style.display = 'flex';
+    setTimeout(() => modalOverlay.classList.add('show'), 10);
+  }
+
+  function showPage(pageId) {
+    // hide all sections
+    document.querySelectorAll('.page-section').forEach(s => s.style.display = 'none');
+
+    const target = document.getElementById(pageId);
+    if (target) {
+      target.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // close mobile menu if open
+      const mobileMenu = document.getElementById('mobile-menu');
+      if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+        mobileMenu.classList.add('hidden');
+      }
+
+      // update navbar active pill
+      document.querySelectorAll('nav [data-page]').forEach(link => {
+        if (link.dataset.page === pageId) {
+          link.classList.add('nav-pill-active');
+        } else {
+          link.classList.remove('nav-pill-active');
+        }
+      });
+
+      if(pageId === 'home' && typeof window.__mocap_resize === 'function'){
+        window.__mocap_resize();
+      }
+      if(pageId === 'home'){
+        setTimeout(()=>initUpiFlipCard('upi-flip-1'), 0);
+      }
+    }
+  }
+
+  function initUpiFlipCard(rootId) {
+    const wrap = document.getElementById(rootId);
+    if (!wrap) return;
+    const card = wrap.querySelector('.flip-card');
+    const btn = wrap.querySelector('button');
+    if (!card) return;
+    const toggle = () => card.classList.toggle('is-flipped');
+    card.onclick = toggle;
+    if (btn) btn.onclick = function (e) { e.stopPropagation(); toggle(); };
+  }
+
+  // ---------- SHOP & CART (DYNAMIC FROM BACKEND) ----------
+  let products = [];
+  let productsLoaded = false;
+  let currentTab = 'computers';
+  let cart = JSON.parse(localStorage.getItem('sc_cart') || '[]');
+
+  function fmtINR(x){ return '₹' + Number(x||0).toLocaleString('en-IN'); }
+  function saveCart(){ localStorage.setItem('sc_cart', JSON.stringify(cart)); }
+  function qtyOf(id){ const it = cart.find(i=>i.id===id); return it?it.qty:0; }
+
+  async function loadProducts(){
+    try {
+      const res = await fetch(API_BASE + '/api/products');
+      const data = await res.json();
+      if (!data.success) throw new Error(data.message || 'Failed to load products');
+
+      products = (data.items || []).map(doc => {
+        const mrp = Number(doc.price || 0);
+        const offerPercent = Number(doc.offerPercentage || 0);
+        const now = new Date();
+        let hasValidOffer = false;
+        if (offerPercent > 0) {
+          if (!doc.offerExpiry) {
+            hasValidOffer = true;
+          } else {
+            const exp = new Date(doc.offerExpiry);
+            if (!isNaN(exp.getTime()) && exp > now) hasValidOffer = true;
+          }
+        }
+
+        const finalPrice = hasValidOffer
+          ? Math.round(mrp * (100 - offerPercent) / 100)
+          : mrp;
+
+        return {
+          id: doc._id,
+          code: doc.code || '',
+          type: doc.category || 'computers',
+          title: doc.title || '',
+          price: finalPrice,
+          mrp: mrp,
+          salePrice: finalPrice,
+          offerLabel: hasValidOffer ? `${offerPercent}% OFF` : '',
+          img: Array.isArray(doc.images) && doc.images.length
+            ? doc.images[0]
+            : 'https://placehold.co/400x260?text=Super+Computers',
+          popular: typeof doc.stock === 'number' ? doc.stock : 999
+        };
+      });
+
+      productsLoaded = true;
+      renderProducts();
+    } catch (err) {
+      console.error('loadProducts error:', err);
+      productsLoaded = true;
+      const grid = document.getElementById('product-grid');
+      if (grid) {
+        grid.innerHTML = `<p class="col-span-full text-center text-red-500 text-sm">Failed to load products. Please try again later.</p>`;
+      }
+    }
+  }
+
+  function switchShopTab(tab){
+    currentTab = tab;
+    document.getElementById('tab-computers').className =
+      'px-4 py-2 rounded-full ' + (tab==='computers' ? 'bg-primary text-white font-semibold btn-hover ripple':'bg-gray-200 text-gray-800 font-semibold btn-hover ripple');
+    document.getElementById('tab-mobiles').className =
+      'px-4 py-2 rounded-full ' + (tab==='mobiles' ? 'bg-primary text-white font-semibold btn-hover ripple':'bg-gray-200 text-gray-800 font-semibold btn-hover ripple');
+    renderProducts();
+  }
+
+  function renderProducts(){
+    const grid = document.getElementById('product-grid');
+    if(!grid) return;
+
+    const q = (document.getElementById('shop-search')?.value || '').toLowerCase();
+    const sort = document.getElementById('shop-sort')?.value || 'popular';
+
+    if (!productsLoaded) {
+      grid.innerHTML = `<p class="col-span-full text-center text-gray-500 text-sm">Loading products...</p>`;
+      return;
+    }
+
+    let list = products.filter(p =>
+      p.type === currentTab &&
+      (!q || (p.title || '').toLowerCase().includes(q))
+    );
+
+    if(sort==='price-asc') list.sort((a,b)=>a.price-b.price);
+    else if(sort==='price-desc') list.sort((a,b)=>b.price-a.price);
+    else if(sort==='name-asc') list.sort((a,b)=>(a.title||'').localeCompare(b.title||'')); 
+    else list.sort((a,b)=> (a.popular||999)-(b.popular||999));
+
+    if (list.length === 0) {
+      grid.innerHTML = `<p class="col-span-full text-center text-gray-500 text-sm">No products found for this category/search.</p>`;
+      return;
+    }
+
+    grid.innerHTML = list.map(p => {
+      const hasDiscount = p.mrp && p.price && p.price < p.mrp;
+      return `
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition border border-gray-100 card-hover tilt-card">
+        <div class="relative">
+          <img src="${p.img}" alt="${p.title || ''}" class="w-full h-40 object-cover bg-gray-100">
+          ${p.offerLabel ? `<span class="absolute top-2 left-2 bg-accent text-white text-xs font-semibold px-2 py-1 rounded-full shadow">${p.offerLabel}</span>` : ''}
+        </div>
+        <div class="p-4">
+          <h4 class="font-bold text-gray-800 line-clamp-2">${p.title || ''}</h4>
+          ${p.code ? `<p class="text-[11px] text-gray-500 mt-0.5">Code: ${p.code}</p>` : ''}
+          <div class="mt-2 flex items-center gap-2">
+            <p class="text-primary font-extrabold text-lg">${fmtINR(p.price || 0)}</p>
+            ${hasDiscount ? `<p class="text-xs text-gray-400 line-through">${fmtINR(p.mrp)}</p>` : ''}
+          </div>
+          <div class="mt-4 grid grid-cols-2 gap-2">
+            <button onclick="addToCart('${p.id}')" class="bg-primary text-white rounded-full py-2 text-sm hover:bg-primary-dark ripple btn-hover">Add to Cart</button>
+            <button onclick="bookInstall('${p.id}')" class="bg-gray-200 text-gray-800 rounded-full py-2 text-sm hover:bg-gray-300 ripple btn-hover">Book Install</button>
+          </div>
+          ${qtyOf(p.id) ? `<p class="mt-2 text-xs text-accent font-semibold">In cart: ${qtyOf(p.id)}</p>`:''}
+        </div>
+      </div>
+    `}).join('');
+
+    updateCartBadges();
+  }
+
+  function addToCart(id){
+    const p = products.find(x=>x.id===id);
+    if(!p) return;
+    const idx = cart.findIndex(x=>x.id===id);
+    if(idx>-1) cart[idx].qty += 1;
+    else cart.push({ id: p.id, title: p.title, price: p.price, qty: 1 });
+    saveCart();
+    renderProducts();
+    renderCart();
+  }
+
+  function removeFromCart(id){
+    cart = cart.filter(x=>x.id!==id);
+    saveCart();
+    renderProducts();
+    renderCart();
+  }
+
+  function changeQty(id, delta){
+    const item = cart.find(x=>x.id===id);
+    if(!item) return;
+    item.qty += delta;
+    if(item.qty<=0) removeFromCart(id);
+    else {
+      saveCart();
+      renderProducts();
+      renderCart();
+    }
+  }
+
+  function cartTotals(){
+    const subtotal = cart.reduce((s,x)=>s + x.price*x.qty, 0);
+    return { subtotal };
+  }
+
+  function renderCart(){
+    const box = document.getElementById('cart-items');
+    if(!box) return;
+
+    if(cart.length===0){
+      box.innerHTML = `<p class="text-gray-500 text-center">Your cart is empty.</p>`;
+    } else {
+      box.innerHTML = cart.map(x=>`
+        <div class="flex items-start gap-3 border-b pb-3">
+          <div class="flex-1">
+            <p class="font-semibold">${x.title}</p>
+            <p class="text-sm text-gray-500">${fmtINR(x.price)} × ${x.qty}</p>
+            <div class="mt-2 flex items-center gap-2">
+              <button class="px-2 py-1 bg-gray-200 rounded-full" onclick="changeQty('${x.id}', -1)">−</button>
+              <span class="text-sm">${x.qty}</span>
+              <button class="px-2 py-1 bg-gray-200 rounded-full" onclick="changeQty('${x.id}', 1)">+</button>
+              <button class="ml-auto text-red-600 text-sm" onclick="removeFromCart('${x.id}')">Remove</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    document.getElementById('cart-subtotal').textContent = fmtINR(cartTotals().subtotal);
+    updateCartBadges();
+  }
+
+  function updateCartBadges(){
+    const count = cart.reduce((s,x)=>s+x.qty, 0);
+    [document.getElementById('cart-count'), document.getElementById('cart-count-fab'), document.getElementById('cart-count-nav')]
+    .forEach(el => {
+      if(el) el.textContent = String(count);
+    });
+  }
+
+  function openCart(){
+    document.getElementById('cart-drawer').classList.remove('translate-x-full');
+    renderCart();
+  }
+
+  function closeCart(){
+    document.getElementById('cart-drawer').classList.add('translate-x-full');
+  }
+
+  // Checkout - WhatsApp
+  function checkout() {
+    if (cart.length === 0) {
+      showMessage('Cart is empty.', 'error');
+      return;
+    }
+
+    const { subtotal } = cartTotals();
+
+    const lines = cart.map(item =>
+      `• ${item.title} x ${item.qty} = ${fmtINR(item.price * item.qty)}`
+    ).join('\n');
+
+    const message =
+      `🛒 *Super Computers Order*\n\n` +
+      `${lines}\n\n` +
+      `*Total:* ${fmtINR(subtotal)}\n\n` +
+      `Thank you!`;
+
+    const waLink = `https://api.whatsapp.com/send?phone=918495098948&text=${encodeURIComponent(message)}`;
+
+    const ok = window.confirm(`Send order ${fmtINR(subtotal)} to WhatsApp?`);
+    if (!ok) return;
+
+    window.location.href = waLink;
+
+    cart = [];
+    saveCart();
+    renderProducts();
+    renderCart();
+    closeCart();
+  }
+
+  function bookInstall(productId){
+    const p = products.find(x=>x.id===productId);
+    if(!p) return;
+    showPage('book');
+    const desc = document.getElementById('description');
+    if(desc) desc.value = `Installation/Setup requested for: ${p.title}`;
+  }
+
+  // Backend connectivity handlers
+  async function handleBooking(e) {
+    e.preventDefault();
+    const data = {
+      device_type: document.getElementById('device_type').value,
+      date_slot: document.getElementById('date_slot').value,
+      description: document.getElementById('description').value,
+      contact_phone: document.getElementById('contact_phone').value
+    };
+
+    try {
+      const res = await fetch(API_BASE + '/api/book', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+      if (result.success) {
+        showMessage(result.message || 'Booking saved successfully!', 'success');
+        e.target.reset();
+      } else {
+        showMessage(result.message || 'Failed to save booking', 'error');
+      }
+    } catch (err) {
+      showMessage('Backend connection failed: ' + err.message, 'error');
+    }
+  }
+
+  async function handleC2C(e) {
+    e.preventDefault();
+    const data = {
+      c2c_brand: document.getElementById('c2c_brand').value,
+      c2c_amount: document.getElementById('c2c_amount').value,
+      c2c_name: document.getElementById('c2c_name').value,
+      c2c_phone: document.getElementById('c2c_phone').value
+    };
+
+    try {
+      const res = await fetch(API_BASE + '/api/c2c', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+      if (result.success) {
+        showMessage(result.message || 'Card-to-Cash request saved!', 'success');
+        e.target.reset();
+      } else {
+        showMessage(result.message || 'Error saving Card-to-Cash request', 'error');
+      }
+    } catch (err) {
+      showMessage('Backend connection failed: ' + err.message, 'error');
+    }
+  }
+
+  async function handleContact(e) {
+    e.preventDefault();
+    const data = {
+      c_name: document.getElementById('c_name').value,
+      c_email: document.getElementById('c_email').value,
+      c_phone: document.getElementById('c_phone').value,
+      c_subject: document.getElementById('c_subject').value,
+      c_message: document.getElementById('c_message').value
+    };
+
+    try {
+      const res = await fetch(API_BASE + '/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+      if (result.success) {
+        showMessage(result.message || 'Message sent successfully!', 'success');
+        e.target.reset();
+      } else {
+        showMessage(result.message || 'Error sending message', 'error');
+      }
+    } catch (err) {
+      showMessage('Backend connection failed: ' + err.message, 'error');
+    }
+  }
+
+  async function handleCscBooking(e) {
+    e.preventDefault();
+    const data = {
+      service: document.getElementById('csc_service').value,
+      date: document.getElementById('csc_date').value,
+      name: document.getElementById('csc_name').value,
+      phone: document.getElementById('csc_phone').value,
+      notes: document.getElementById('csc_notes').value
+    };
+
+    try {
+      const res = await fetch(API_BASE + '/api/csc-booking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+      if (result.success) {
+        showMessage(result.message || 'CSC booking saved successfully!', 'success');
+        e.target.reset();
+      } else {
+        showMessage(result.message || 'Failed to save CSC booking.', 'error');
+      }
+    } catch (err) {
+      showMessage('Backend connection failed: ' + err.message, 'error');
+    }
+  }
+
+  async function handleTrack(e) {
+    e.preventDefault();
+    const phone = document.getElementById('ticket_id').value.trim();
+    if (!phone) {
+      showMessage('Please enter your phone number or ticket ID.', 'error');
+      return;
+    }
+
+    try {
+      const res = await fetch(API_BASE + '/api/track?phone=' + encodeURIComponent(phone));
+      const result = await res.json();
+
+      const resultDiv = document.getElementById('tracking-result');
+      const errorDiv = document.getElementById('tracking-error');
+      resultDiv.classList.add('hidden');
+      errorDiv.classList.add('hidden');
+
+      if (!result.success) {
+        errorDiv.textContent = result.message || 'No booking found for this number.';
+        errorDiv.classList.remove('hidden');
+        return;
+      }
+
+      const booking = result.booking;
+      document.getElementById('track-id').textContent = booking.id || 'N/A';
+      document.getElementById('track-status').textContent = booking.status || 'Pending';
+      document.getElementById('track-notes').textContent = booking.description || 'No notes available';
+      document.getElementById('track-estimate').textContent = booking.estimate
+        ? fmtINR(booking.estimate)
+        : 'N/A';
+      resultDiv.classList.remove('hidden');
+    } catch (err) {
+      showMessage('Backend connection failed: ' + err.message, 'error');
+    }
+  }
+
+  function toast(msg){ showMessage(msg, 'error'); }
+  function openLiveChat(){ showMessage('Live chat coming soon. For instant help, ping us on WhatsApp.', 'info'); }
+  function showFAQ(){ const el = document.getElementById('faq'); if(el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+
+  function prefillCSC(code){
+    showPage('csc');
+    const select = document.getElementById('csc_service');
+    if(!select) return;
+    select.value = code;
+    select.dispatchEvent(new Event('change'));
+  }
+
+  // header sticky glow on scroll
+  window.addEventListener('scroll', () => {
+    const header = document.querySelector('header.sticky-glow');
+    if (!header) return;
+    if (window.scrollY > 16) header.classList.add('is-scrolled');
+    else header.classList.remove('is-scrolled');
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    showPage('home');
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (mobileMenuButton && mobileMenu) {
+      mobileMenuButton.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+    }
+    loadProducts();
+    renderCart();
+    initUpiFlipCard('upi-flip-1');
+
+    const dateInput = document.getElementById('date_slot');
+    if (dateInput) {
+      const today = new Date().toISOString().split('T')[0];
+      dateInput.min = today;
+    }
+  });
+</script>
+
+<!-- Digital Circuit Background Animation -->
+<script>
+  (function(){
+    const canvas = document.getElementById('mocap-canvas');
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const particles = [];
+    let w = 0, h = 0, dpr = 1;
+    const baseCount = window.innerWidth > 1024 ? 120 : (window.innerWidth > 768 ? 90 : 50);
+    const particleCount = baseCount;
+    const connectionDistance = 100;
+
+    class Particle {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.color = 'rgba(255, 255, 255, 0.9)';
+        this.radius = Math.random() * 1.5 + 0.5;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        if (this.x < 0) { this.vx *= -1; this.x = 1; }
+        if (this.x > w) { this.vx *= -1; this.x = w - 1; }
+        if (this.y < 0) { this.vy *= -1; this.y = 1; }
+        if (this.y > h) { this.vy *= -1; this.y = h - 1; }
+
+        this.vx += (Math.random() - 0.5) * 0.05;
+        this.vy += (Math.random() - 0.5) * 0.05;
+
+        const maxV = 0.5;
+        this.vx = Math.max(-maxV, Math.min(maxV, this.vx));
+        this.vy = Math.max(-maxV, Math.min(maxV, this.vy));
+      }
+
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    function initParticles() {
+      particles.length = 0;
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle(Math.random() * w, Math.random() * h));
+      }
+    }
+
+    function resize() {
+      dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+      w = canvas.clientWidth;
+      h = canvas.clientHeight;
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      initParticles();
+    }
+
+    function connectParticles() {
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const p1 = particles[i], p2 = particles[j];
+          const dx = p1.x - p2.x, dy = p1.y - p2.y;
+          const dist = Math.hypot(dx, dy);
+
+          if (dist < connectionDistance) {
+            const opacity = 1 - (dist / connectionDistance);
+            ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.4})`;
+            ctx.lineWidth = 0.5;
+            ctx.beginPath();
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function loop() {
+      ctx.fillStyle = 'rgba(79, 70, 229, 0.10)';
+      ctx.fillRect(0, 0, w, h);
+
+      connectParticles();
+      for (const p of particles) {
+        p.update();
+        p.draw();
+      }
+
+      requestAnimationFrame(loop);
+    }
+
+    window.__mocap_resize = resize;
+    document.addEventListener('DOMContentLoaded', () => {
+      resize();
+      loop();
+    });
+
+    window.addEventListener('resize', resize, { passive: true });
+  })();
+</script>
+
+</body>
+</html>
