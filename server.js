@@ -4,6 +4,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const fs = require("fs");
 const path = require("path");
+const os = require("os");
 const PDFDocument = require("pdfkit");
 const { v4: uuidv4 } = require("uuid");
 const mongoose = require("mongoose");
@@ -16,14 +17,12 @@ const ContactMessage = require("./ContactMessage");
 const Product = require("./Product");
 
 const app = express();
-// Use Render's PORT when present; fall back to 10000 which you've been seeing in logs
 const PORT = process.env.PORT || 10000;
 
 // ---------- MONGODB CONNECTION ----------
 function maskUri(uri) {
   if (!uri) return "";
   try {
-    // hide credentials for logging
     return uri.replace(/\/\/([^:]+):([^@]+)@/, "//$1:***@");
   } catch {
     return uri;
@@ -35,11 +34,7 @@ if (!process.env.MONGODB_URI) {
 } else {
   console.log("MONGODB_URI preview:", maskUri(process.env.MONGODB_URI).slice(0, 120));
   mongoose
-    .connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      // keep default options for mongoose v6+; added explicit to avoid warnings on older drivers
-    })
+    .connect(process.env.MONGODB_URI) // mongoose v6+ uses sensible defaults
     .then(() => console.log("🌿 MongoDB Connected"))
     .catch((err) => {
       console.error("MongoDB Error:", err && err.message ? err.message : err);
@@ -47,16 +42,14 @@ if (!process.env.MONGODB_URI) {
 }
 
 // ---------- MIDDLEWARE ----------
-app.use(cors()); // you can restrict origin in production if needed
+app.use(cors());
 app.use(express.json({ limit: "5mb" }));
 app.use(morgan("dev"));
 
-// ---------- STATIC FRONTEND (HTML, CSS, JS) ----------
-// Serve everything in this folder (index.html, admin.html, etc.)
+// ---------- STATIC FRONTEND ----------
 const publicDir = __dirname;
 app.use(express.static(publicDir));
 
-// Explicit routes for your main pages
 app.get("/", (req, res) => {
   res.sendFile(path.join(publicDir, "index.html"));
 });
@@ -73,14 +66,14 @@ app.get("/track", (req, res) => {
   res.sendFile(path.join(publicDir, "track.html"));
 });
 
-// ---------- PDFs ----------
-const pdfDir = path.join(__dirname, "pdfs");
-if (!fs.existsSync(pdfDir)) fs.mkdirSync(pdfDir);
-app.use("/pdfs", express.static(pdfDir));
+// ---------- PDFs (safe for serverless) ----------
+const pdfsBase = path.join(os.tmpdir(), "super-computers-pdfs");
+// Do NOT create the dir at import time; create inside handler
+app.use("/pdfs", express.static(pdfsBase));
 
 const fmtINR = (x) => "₹" + Number(x || 0).toLocaleString("en-IN");
 
-// Simple health check for monitoring
+// ---------- HEALTH ----------
 app.get("/api/health", (req, res) => {
   res.json({ ok: true, message: "Super Computers API running ✅" });
 });
@@ -89,25 +82,18 @@ app.get("/api/health", (req, res) => {
 // 1) CUSTOMER-FACING ROUTES
 // =====================================================
 
-// PRODUCTS (Only not hidden)
 app.get("/api/products", async (req, res) => {
   try {
-    const items = await Product.find({
-      hideProduct: { $ne: true }, // show all where hideProduct is not true
-    })
+    const items = await Product.find({ hideProduct: { $ne: true } })
       .sort({ category: 1, title: 1 })
       .lean();
     res.json({ success: true, items });
   } catch (err) {
     console.error("Products error:", err);
-    res.status(500).json({
-      success: false,
-      message: "Server error while loading products",
-    });
+    res.status(500).json({ success: false, message: "Server error while loading products" });
   }
 });
 
-// BOOK REPAIR
 app.post("/api/book", async (req, res) => {
   try {
     const { device_type, date_slot, description, contact_phone } = req.body || {};
@@ -129,18 +115,13 @@ app.post("/api/book", async (req, res) => {
     };
 
     await Booking.create(booking);
-    res.json({
-      success: true,
-      message: `Booking created with Ticket ID: ${id}`,
-      bookingId: id,
-    });
+    res.json({ success: true, message: `Booking created with Ticket ID: ${id}`, bookingId: id });
   } catch (err) {
     console.error("Book error:", err);
     res.status(500).json({ success: false, message: "Server error while booking" });
   }
 });
 
-// TRACK TICKET
 app.get("/api/track", async (req, res) => {
   try {
     const query = (req.query.phone || "").trim();
@@ -155,9 +136,7 @@ app.get("/api/track", async (req, res) => {
       booking = await Booking.findOne({ contactPhone: query }).lean();
     }
 
-    if (!booking) {
-      return res.json({ success: false, message: "No booking found" });
-    }
+    if (!booking) return res.json({ success: false, message: "No booking found" });
 
     res.json({ success: true, booking });
   } catch (err) {
@@ -166,7 +145,6 @@ app.get("/api/track", async (req, res) => {
   }
 });
 
-// CARD-TO-CASH
 app.post("/api/c2c", async (req, res) => {
   try {
     const { c2c_brand, c2c_amount, c2c_name, c2c_phone } = req.body || {};
@@ -192,7 +170,6 @@ app.post("/api/c2c", async (req, res) => {
   }
 });
 
-// CSC BOOKING
 app.post("/api/csc-booking", async (req, res) => {
   try {
     const { service, date, name, phone, notes } = req.body || {};
@@ -201,15 +178,7 @@ app.post("/api/csc-booking", async (req, res) => {
     }
 
     const id = "CSC-" + uuidv4().slice(0, 8).toUpperCase();
-    const entry = {
-      id,
-      service,
-      date,
-      name,
-      phone,
-      notes: notes || "",
-      createdAt: new Date().toISOString(),
-    };
+    const entry = { id, service, date, name, phone, notes: notes || "", createdAt: new Date().toISOString() };
 
     await CscBooking.create(entry);
     res.json({ success: true, token: id });
@@ -219,7 +188,6 @@ app.post("/api/csc-booking", async (req, res) => {
   }
 });
 
-// CONTACT FORM
 app.post("/api/contact", async (req, res) => {
   try {
     const { c_name, c_email, c_phone, c_subject, c_message } = req.body || {};
@@ -246,72 +214,87 @@ app.post("/api/contact", async (req, res) => {
   }
 });
 
-// CART → PDF (INVOICE)
-app.post("/api/cart-pdf", (req, res) => {
+// CART → PDF (INVOICE) - safe for serverless
+app.post("/api/cart-pdf", async (req, res) => {
   const { items, subtotal, timestamp } = req.body || {};
 
   if (!Array.isArray(items) || items.length === 0) {
-    return res.status(400).json({
-      success: false,
-      message: "Cart is empty.",
-    });
+    return res.status(400).json({ success: false, message: "Cart is empty." });
+  }
+
+  // Ensure pdfs dir exists in writable temp dir
+  try {
+    await fs.promises.mkdir(pdfsBase, { recursive: true });
+  } catch (err) {
+    console.error("Could not create temp pdfs dir, proceeding (writes may fail):", err);
   }
 
   const orderId = "ORD-" + uuidv4().slice(0, 8).toUpperCase();
   const filename = `${orderId}.pdf`;
-  const filePath = path.join(pdfDir, filename);
+  const filePath = path.join(pdfsBase, filename);
 
-  const doc = new PDFDocument({ margin: 40 });
-  const stream = fs.createWriteStream(filePath);
-  doc.pipe(stream);
+  try {
+    const doc = new PDFDocument({ margin: 40 });
+    const stream = fs.createWriteStream(filePath);
+    doc.pipe(stream);
 
-  doc.fontSize(22).text("Super Computers", { align: "center" });
-  doc.moveDown(0.3);
-  doc.fontSize(11).text("Galiveedu, Near ZPHS Boys High School", { align: "center" });
-  doc.text("Annamyya Dist, Andhra Pradesh - 516267", { align: "center" });
-  doc.text("Phone: +91 8688188948", { align: "center" });
-  doc.moveDown(0.5);
-  doc.moveTo(40, doc.y).lineTo(570, doc.y).stroke();
-  doc.moveDown();
+    doc.fontSize(22).text("Super Computers", { align: "center" });
+    doc.moveDown(0.3);
+    doc.fontSize(11).text("Galiveedu, Near ZPHS Boys High School", { align: "center" });
+    doc.text("Annamyya Dist, Andhra Pradesh - 516267", { align: "center" });
+    doc.text("Phone: +91 8688188948", { align: "center" });
+    doc.moveDown(0.5);
+    doc.moveTo(40, doc.y).lineTo(570, doc.y).stroke();
+    doc.moveDown();
 
-  doc.fontSize(14).text("Order Invoice", { align: "center" });
-  doc.moveDown();
+    doc.fontSize(14).text("Order Invoice", { align: "center" });
+    doc.moveDown();
 
-  doc.fontSize(11);
-  doc.text(`Order ID : ${orderId}`);
-  doc.text(`Date     : ${timestamp || new Date().toLocaleString("en-IN")}`);
-  doc.moveDown();
+    doc.fontSize(11);
+    doc.text(`Order ID : ${orderId}`);
+    doc.text(`Date     : ${timestamp || new Date().toLocaleString("en-IN")}`);
+    doc.moveDown();
 
-  doc.fontSize(12).text("Items:", { underline: true });
-  doc.moveDown(0.5);
+    doc.fontSize(12).text("Items:", { underline: true });
+    doc.moveDown(0.5);
 
-  items.forEach((item, index) => {
-    doc
-      .fontSize(11)
-      .text(`${index + 1}. ${item.title}  -  ${fmtINR(item.price)} x ${item.qty}  =  ${fmtINR(item.price * item.qty)}`);
-  });
-
-  doc.moveDown();
-  doc.fontSize(13).text(`Subtotal: ${fmtINR(subtotal)}`, { align: "right" });
-
-  doc.moveDown(2);
-  doc.fontSize(10).text("Thank you for shopping with Super Computers.", { align: "center" });
-  doc.text("For any support, please contact: +91 8688188948", { align: "center" });
-
-  doc.end();
-
-  stream.on("finish", () => {
-    const pdfUrl = `${req.protocol}://${req.get("host")}/pdfs/${filename}`;
-    res.json({ success: true, pdfUrl, orderId });
-  });
-
-  stream.on("error", (err) => {
-    console.error("PDF error:", err);
-    res.status(500).json({
-      success: false,
-      message: "Failed to generate PDF.",
+    items.forEach((item, index) => {
+      doc
+        .fontSize(11)
+        .text(
+          `${index + 1}. ${item.title}  -  ${fmtINR(item.price)} x ${item.qty}  =  ${fmtINR(
+            item.price * item.qty
+          )}`
+        );
     });
-  });
+
+    doc.moveDown();
+    doc.fontSize(13).text(`Subtotal: ${fmtINR(subtotal)}`, { align: "right" });
+
+    doc.moveDown(2);
+    doc.fontSize(10).text("Thank you for shopping with Super Computers.", { align: "center" });
+    doc.text("For any support, please contact: +91 8688188948", { align: "center" });
+
+    doc.end();
+
+    stream.on("finish", () => {
+      try {
+        const pdfUrl = `${req.protocol}://${req.get("host")}/pdfs/${filename}`;
+        res.json({ success: true, pdfUrl, orderId });
+      } catch (err) {
+        console.error("Error sending pdf response:", err);
+        res.status(500).json({ success: false, message: "Failed to generate PDF." });
+      }
+    });
+
+    stream.on("error", (err) => {
+      console.error("PDF stream error:", err);
+      res.status(500).json({ success: false, message: "Failed to generate PDF." });
+    });
+  } catch (err) {
+    console.error("PDF generation error:", err);
+    res.status(500).json({ success: false, message: "Failed to generate PDF." });
+  }
 });
 
 // =====================================================
@@ -328,7 +311,6 @@ function checkAdminKey(req, res, next) {
   next();
 }
 
-// SUMMARY
 app.get("/api/admin/summary", checkAdminKey, async (req, res) => {
   try {
     const [bookingCount, c2cCount, cscCount, contactCount, productCount] = await Promise.all([
@@ -349,7 +331,6 @@ app.get("/api/admin/summary", checkAdminKey, async (req, res) => {
   }
 });
 
-// BOOKINGS LIST
 app.get("/api/admin/bookings", checkAdminKey, async (req, res) => {
   try {
     const bookings = await Booking.find().sort({ createdAt: -1 }).limit(300).lean();
@@ -360,33 +341,23 @@ app.get("/api/admin/bookings", checkAdminKey, async (req, res) => {
   }
 });
 
-// UPDATE BOOKING
 app.patch("/api/admin/bookings/:id", checkAdminKey, async (req, res) => {
   try {
     const { status, estimate, finalAmount } = req.body;
     const update = {};
 
     if (status) update.status = status;
+    if (estimate === null || estimate === "" || typeof estimate === "undefined") update.estimate = null;
+    else update.estimate = Number(estimate);
 
-    if (estimate === null || estimate === "" || typeof estimate === "undefined") {
-      update.estimate = null;
-    } else {
-      update.estimate = Number(estimate);
-    }
-
-    if (finalAmount === null || finalAmount === "" || typeof finalAmount === "undefined") {
-      update.finalAmount = null;
-    } else {
-      update.finalAmount = Number(finalAmount);
-    }
+    if (finalAmount === null || finalAmount === "" || typeof finalAmount === "undefined") update.finalAmount = null;
+    else update.finalAmount = Number(finalAmount);
 
     update.updatedAt = new Date();
 
     const booking = await Booking.findByIdAndUpdate(req.params.id, update, { new: true });
 
-    if (!booking) {
-      return res.status(404).json({ success: false, message: "Booking not found" });
-    }
+    if (!booking) return res.status(404).json({ success: false, message: "Booking not found" });
 
     res.json({ success: true, booking });
   } catch (err) {
@@ -395,7 +366,6 @@ app.patch("/api/admin/bookings/:id", checkAdminKey, async (req, res) => {
   }
 });
 
-// C2C LIST
 app.get("/api/admin/c2c", checkAdminKey, async (req, res) => {
   try {
     const items = await C2CRequest.find().sort({ createdAt: -1 }).limit(300).lean();
@@ -406,7 +376,6 @@ app.get("/api/admin/c2c", checkAdminKey, async (req, res) => {
   }
 });
 
-// CSC LIST
 app.get("/api/admin/csc", checkAdminKey, async (req, res) => {
   try {
     const items = await CscBooking.find().sort({ createdAt: -1 }).limit(300).lean();
@@ -417,7 +386,6 @@ app.get("/api/admin/csc", checkAdminKey, async (req, res) => {
   }
 });
 
-// CONTACT LIST
 app.get("/api/admin/contacts", checkAdminKey, async (req, res) => {
   try {
     const items = await ContactMessage.find().sort({ createdAt: -1 }).limit(300).lean();
@@ -428,7 +396,6 @@ app.get("/api/admin/contacts", checkAdminKey, async (req, res) => {
   }
 });
 
-// ADMIN PRODUCTS
 app.get("/api/admin/products", checkAdminKey, async (req, res) => {
   try {
     const items = await Product.find().sort({ category: 1, title: 1 }).lean();
@@ -439,32 +406,22 @@ app.get("/api/admin/products", checkAdminKey, async (req, res) => {
   }
 });
 
-// CREATE PRODUCT
 app.post("/api/admin/products", checkAdminKey, async (req, res) => {
   console.log("📥 CREATE PRODUCT BODY RECEIVED:", req.body);
   try {
-    const {
-      title,
-      category,
-      description,
-      price,
-      offerPercentage,
-      stock,
-      hideProduct,
-      images,
-      offerExpiry,
-    } = req.body || {};
+    const { title, category, description, price, offerPercentage, stock, hideProduct, images, offerExpiry } =
+      req.body || {};
 
     if (!title || !category || (price === undefined || price === null)) {
-      return res.status(400).json({
-        success: false,
-        message: "Product title, category and price are required.",
-      });
+      return res.status(400).json({ success: false, message: "Product title, category and price are required." });
     }
 
     const now = new Date();
     const priceNum = Number(price);
-    const offerPercentNum = offerPercentage === null || offerPercentage === "" || typeof offerPercentage === "undefined" ? 0 : Number(offerPercentage);
+    const offerPercentNum =
+      offerPercentage === null || offerPercentage === "" || typeof offerPercentage === "undefined"
+        ? 0
+        : Number(offerPercentage);
     const stockNum = stock === null || stock === "" || typeof stock === "undefined" ? 0 : Number(stock);
 
     let offerExpiryDate = null;
@@ -506,21 +463,11 @@ app.post("/api/admin/products", checkAdminKey, async (req, res) => {
   }
 });
 
-// UPDATE PRODUCT
 app.patch("/api/admin/products/:id", checkAdminKey, async (req, res) => {
   console.log("📥 UPDATE PRODUCT BODY RECEIVED:", req.body);
   try {
-    const {
-      title,
-      category,
-      description,
-      price,
-      offerPercentage,
-      stock,
-      hideProduct,
-      images,
-      offerExpiry,
-    } = req.body || {};
+    const { title, category, description, price, offerPercentage, stock, hideProduct, images, offerExpiry } =
+      req.body || {};
 
     const product = await Product.findById(req.params.id);
     if (!product) return res.status(404).json({ success: false, message: "Product not found" });
