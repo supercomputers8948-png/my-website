@@ -1,4 +1,3 @@
-// ---------- ENV & CORE DEPENDENCIES ----------
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
@@ -17,21 +16,39 @@ const ContactMessage = require("./ContactMessage");
 const Product = require("./Product");
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+// Use Render's PORT when present; fall back to 10000 which you've been seeing in logs
+const PORT = process.env.PORT || 10000;
 
 // ---------- MONGODB CONNECTION ----------
+function maskUri(uri) {
+  if (!uri) return "";
+  try {
+    // hide credentials for logging
+    return uri.replace(/\/\/([^:]+):([^@]+)@/, "//$1:***@");
+  } catch {
+    return uri;
+  }
+}
+
 if (!process.env.MONGODB_URI) {
-  console.error("❌ MONGODB_URI is not set in .env");
+  console.error("❌ MONGODB_URI is not set in environment variables");
 } else {
+  console.log("MONGODB_URI preview:", maskUri(process.env.MONGODB_URI).slice(0, 120));
   mongoose
-    .connect(process.env.MONGODB_URI)
+    .connect(process.env.MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      // keep default options for mongoose v6+; added explicit to avoid warnings on older drivers
+    })
     .then(() => console.log("🌿 MongoDB Connected"))
-    .catch((err) => console.error("MongoDB Error:", err));
+    .catch((err) => {
+      console.error("MongoDB Error:", err && err.message ? err.message : err);
+    });
 }
 
 // ---------- MIDDLEWARE ----------
-app.use(cors());
-app.use(express.json());
+app.use(cors()); // you can restrict origin in production if needed
+app.use(express.json({ limit: "5mb" }));
 app.use(morgan("dev"));
 
 // ---------- STATIC FRONTEND (HTML, CSS, JS) ----------
@@ -77,8 +94,9 @@ app.get("/api/products", async (req, res) => {
   try {
     const items = await Product.find({
       hideProduct: { $ne: true }, // show all where hideProduct is not true
-    }).sort({ category: 1, title: 1 });
-
+    })
+      .sort({ category: 1, title: 1 })
+      .lean();
     res.json({ success: true, items });
   } catch (err) {
     console.error("Products error:", err);
@@ -94,13 +112,10 @@ app.post("/api/book", async (req, res) => {
   try {
     const { device_type, date_slot, description, contact_phone } = req.body || {};
     if (!device_type || !date_slot || !description || !contact_phone) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Missing fields" });
+      return res.status(400).json({ success: false, message: "Missing fields" });
     }
 
-    const id =
-      "TF" + new Date().getFullYear() + "-" + uuidv4().slice(0, 8).toUpperCase();
+    const id = "TF" + new Date().getFullYear() + "-" + uuidv4().slice(0, 8).toUpperCase();
 
     const booking = {
       id,
@@ -121,9 +136,7 @@ app.post("/api/book", async (req, res) => {
     });
   } catch (err) {
     console.error("Book error:", err);
-    res
-      .status(500)
-      .json({ success: false, message: "Server error while booking" });
+    res.status(500).json({ success: false, message: "Server error while booking" });
   }
 });
 
@@ -132,16 +145,14 @@ app.get("/api/track", async (req, res) => {
   try {
     const query = (req.query.phone || "").trim();
     if (!query) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Phone or Ticket ID required" });
+      return res.status(400).json({ success: false, message: "Phone or Ticket ID required" });
     }
 
     let booking;
     if (/^TF\d{4}-/i.test(query)) {
-      booking = await Booking.findOne({ id: query.toUpperCase() });
+      booking = await Booking.findOne({ id: query.toUpperCase() }).lean();
     } else {
-      booking = await Booking.findOne({ contactPhone: query });
+      booking = await Booking.findOne({ contactPhone: query }).lean();
     }
 
     if (!booking) {
@@ -151,9 +162,7 @@ app.get("/api/track", async (req, res) => {
     res.json({ success: true, booking });
   } catch (err) {
     console.error("Track error:", err);
-    res
-      .status(500)
-      .json({ success: false, message: "Server error while tracking" });
+    res.status(500).json({ success: false, message: "Server error while tracking" });
   }
 });
 
@@ -162,9 +171,7 @@ app.post("/api/c2c", async (req, res) => {
   try {
     const { c2c_brand, c2c_amount, c2c_name, c2c_phone } = req.body || {};
     if (!c2c_brand || !c2c_amount || !c2c_name || !c2c_phone) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Missing fields" });
+      return res.status(400).json({ success: false, message: "Missing fields" });
     }
 
     const id = "C2C-" + uuidv4().slice(0, 8).toUpperCase();
@@ -181,9 +188,7 @@ app.post("/api/c2c", async (req, res) => {
     res.json({ success: true, refId: id });
   } catch (err) {
     console.error("C2C error:", err);
-    res
-      .status(500)
-      .json({ success: false, message: "Server error while C2C" });
+    res.status(500).json({ success: false, message: "Server error while C2C" });
   }
 });
 
@@ -192,9 +197,7 @@ app.post("/api/csc-booking", async (req, res) => {
   try {
     const { service, date, name, phone, notes } = req.body || {};
     if (!service || !date || !name || !phone) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Missing fields" });
+      return res.status(400).json({ success: false, message: "Missing fields" });
     }
 
     const id = "CSC-" + uuidv4().slice(0, 8).toUpperCase();
@@ -212,9 +215,7 @@ app.post("/api/csc-booking", async (req, res) => {
     res.json({ success: true, token: id });
   } catch (err) {
     console.error("CSC booking error:", err);
-    res
-      .status(500)
-      .json({ success: false, message: "Server error while CSC" });
+    res.status(500).json({ success: false, message: "Server error while CSC" });
   }
 });
 
@@ -223,9 +224,7 @@ app.post("/api/contact", async (req, res) => {
   try {
     const { c_name, c_email, c_phone, c_subject, c_message } = req.body || {};
     if (!c_name || !c_email || !c_subject || !c_message) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Missing fields" });
+      return res.status(400).json({ success: false, message: "Missing fields" });
     }
 
     const id = "CT-" + uuidv4().slice(0, 8).toUpperCase();
@@ -243,9 +242,7 @@ app.post("/api/contact", async (req, res) => {
     res.json({ success: true, refId: id });
   } catch (err) {
     console.error("Contact error:", err);
-    res
-      .status(500)
-      .json({ success: false, message: "Server error while contact" });
+    res.status(500).json({ success: false, message: "Server error while contact" });
   }
 });
 
@@ -270,9 +267,7 @@ app.post("/api/cart-pdf", (req, res) => {
 
   doc.fontSize(22).text("Super Computers", { align: "center" });
   doc.moveDown(0.3);
-  doc
-    .fontSize(11)
-    .text("Galiveedu, Near ZPHS Boys High School", { align: "center" });
+  doc.fontSize(11).text("Galiveedu, Near ZPHS Boys High School", { align: "center" });
   doc.text("Annamyya Dist, Andhra Pradesh - 516267", { align: "center" });
   doc.text("Phone: +91 8688188948", { align: "center" });
   doc.moveDown(0.5);
@@ -293,25 +288,15 @@ app.post("/api/cart-pdf", (req, res) => {
   items.forEach((item, index) => {
     doc
       .fontSize(11)
-      .text(
-        `${index + 1}. ${item.title}  -  ${fmtINR(item.price)} x ${
-          item.qty
-        }  =  ${fmtINR(item.price * item.qty)}`
-      );
+      .text(`${index + 1}. ${item.title}  -  ${fmtINR(item.price)} x ${item.qty}  =  ${fmtINR(item.price * item.qty)}`);
   });
 
   doc.moveDown();
   doc.fontSize(13).text(`Subtotal: ${fmtINR(subtotal)}`, { align: "right" });
 
   doc.moveDown(2);
-  doc
-    .fontSize(10)
-    .text("Thank you for shopping with Super Computers.", {
-      align: "center",
-    });
-  doc.text("For any support, please contact: +91 8688188948", {
-    align: "center",
-  });
+  doc.fontSize(10).text("Thank you for shopping with Super Computers.", { align: "center" });
+  doc.text("For any support, please contact: +91 8688188948", { align: "center" });
 
   doc.end();
 
@@ -338,9 +323,7 @@ function checkAdminKey(req, res, next) {
   const serverKey = process.env.ADMIN_KEY;
 
   if (!clientKey || clientKey !== serverKey) {
-    return res
-      .status(401)
-      .json({ success: false, message: "Unauthorized: invalid admin key" });
+    return res.status(401).json({ success: false, message: "Unauthorized: invalid admin key" });
   }
   next();
 }
@@ -348,14 +331,13 @@ function checkAdminKey(req, res, next) {
 // SUMMARY
 app.get("/api/admin/summary", checkAdminKey, async (req, res) => {
   try {
-    const [bookingCount, c2cCount, cscCount, contactCount, productCount] =
-      await Promise.all([
-        Booking.countDocuments(),
-        C2CRequest.countDocuments(),
-        CscBooking.countDocuments(),
-        ContactMessage.countDocuments(),
-        Product.countDocuments(),
-      ]);
+    const [bookingCount, c2cCount, cscCount, contactCount, productCount] = await Promise.all([
+      Booking.countDocuments(),
+      C2CRequest.countDocuments(),
+      CscBooking.countDocuments(),
+      ContactMessage.countDocuments(),
+      Product.countDocuments(),
+    ]);
 
     res.json({
       success: true,
@@ -370,7 +352,7 @@ app.get("/api/admin/summary", checkAdminKey, async (req, res) => {
 // BOOKINGS LIST
 app.get("/api/admin/bookings", checkAdminKey, async (req, res) => {
   try {
-    const bookings = await Booking.find().sort({ createdAt: -1 }).limit(300);
+    const bookings = await Booking.find().sort({ createdAt: -1 }).limit(300).lean();
     res.json({ success: true, bookings });
   } catch (err) {
     console.error("Admin bookings error:", err);
@@ -392,11 +374,7 @@ app.patch("/api/admin/bookings/:id", checkAdminKey, async (req, res) => {
       update.estimate = Number(estimate);
     }
 
-    if (
-      finalAmount === null ||
-      finalAmount === "" ||
-      typeof finalAmount === "undefined"
-    ) {
+    if (finalAmount === null || finalAmount === "" || typeof finalAmount === "undefined") {
       update.finalAmount = null;
     } else {
       update.finalAmount = Number(finalAmount);
@@ -404,14 +382,10 @@ app.patch("/api/admin/bookings/:id", checkAdminKey, async (req, res) => {
 
     update.updatedAt = new Date();
 
-    const booking = await Booking.findByIdAndUpdate(req.params.id, update, {
-      new: true,
-    });
+    const booking = await Booking.findByIdAndUpdate(req.params.id, update, { new: true });
 
     if (!booking) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Booking not found" });
+      return res.status(404).json({ success: false, message: "Booking not found" });
     }
 
     res.json({ success: true, booking });
@@ -424,7 +398,7 @@ app.patch("/api/admin/bookings/:id", checkAdminKey, async (req, res) => {
 // C2C LIST
 app.get("/api/admin/c2c", checkAdminKey, async (req, res) => {
   try {
-    const items = await C2CRequest.find().sort({ createdAt: -1 }).limit(300);
+    const items = await C2CRequest.find().sort({ createdAt: -1 }).limit(300).lean();
     res.json({ success: true, items });
   } catch (err) {
     console.error("Admin c2c error:", err);
@@ -435,7 +409,7 @@ app.get("/api/admin/c2c", checkAdminKey, async (req, res) => {
 // CSC LIST
 app.get("/api/admin/csc", checkAdminKey, async (req, res) => {
   try {
-    const items = await CscBooking.find().sort({ createdAt: -1 }).limit(300);
+    const items = await CscBooking.find().sort({ createdAt: -1 }).limit(300).lean();
     res.json({ success: true, items });
   } catch (err) {
     console.error("Admin csc error:", err);
@@ -446,7 +420,7 @@ app.get("/api/admin/csc", checkAdminKey, async (req, res) => {
 // CONTACT LIST
 app.get("/api/admin/contacts", checkAdminKey, async (req, res) => {
   try {
-    const items = await ContactMessage.find().sort({ createdAt: -1 }).limit(300);
+    const items = await ContactMessage.find().sort({ createdAt: -1 }).limit(300).lean();
     res.json({ success: true, items });
   } catch (err) {
     console.error("Admin contacts error:", err);
@@ -454,17 +428,10 @@ app.get("/api/admin/contacts", checkAdminKey, async (req, res) => {
   }
 });
 
-// =====================================================
-// ADMIN PRODUCTS (USING PRODUCT SCHEMA WITH `title`)
-// =====================================================
-
-// LIST PRODUCTS
+// ADMIN PRODUCTS
 app.get("/api/admin/products", checkAdminKey, async (req, res) => {
   try {
-    const items = await Product.find().sort({
-      category: 1,
-      title: 1,
-    });
+    const items = await Product.find().sort({ category: 1, title: 1 }).lean();
     res.json({ success: true, items });
   } catch (err) {
     console.error("Admin products error:", err);
@@ -497,30 +464,16 @@ app.post("/api/admin/products", checkAdminKey, async (req, res) => {
 
     const now = new Date();
     const priceNum = Number(price);
-    const offerPercentNum =
-      offerPercentage === null ||
-      offerPercentage === "" ||
-      typeof offerPercentage === "undefined"
-        ? 0
-        : Number(offerPercentage);
-    const stockNum =
-      stock === null || stock === "" || typeof stock === "undefined"
-        ? 0
-        : Number(stock);
+    const offerPercentNum = offerPercentage === null || offerPercentage === "" || typeof offerPercentage === "undefined" ? 0 : Number(offerPercentage);
+    const stockNum = stock === null || stock === "" || typeof stock === "undefined" ? 0 : Number(stock);
 
     let offerExpiryDate = null;
     if (offerExpiry) {
       const dt = new Date(offerExpiry);
-      if (!isNaN(dt.getTime())) {
-        offerExpiryDate = dt;
-      }
+      if (!isNaN(dt.getTime())) offerExpiryDate = dt;
     }
 
-    const imageList = Array.isArray(images)
-      ? images
-      : images
-      ? [images]
-      : [];
+    const imageList = Array.isArray(images) ? images : images ? [images] : [];
 
     const product = await Product.create({
       title,
@@ -546,19 +499,10 @@ app.post("/api/admin/products", checkAdminKey, async (req, res) => {
     res.json({ success: true, product });
   } catch (err) {
     console.error("🔥 PRODUCT CREATE ERROR:", err);
-
     if (err.name === "ValidationError") {
-      return res.status(400).json({
-        success: false,
-        message: "Product validation failed.",
-        errors: err.errors,
-      });
+      return res.status(400).json({ success: false, message: "Product validation failed.", errors: err.errors });
     }
-
-    res.status(500).json({
-      success: false,
-      message: err.message || "Server error while saving product.",
-    });
+    res.status(500).json({ success: false, message: err.message || "Server error while saving product." });
   }
 });
 
@@ -579,11 +523,7 @@ app.patch("/api/admin/products/:id", checkAdminKey, async (req, res) => {
     } = req.body || {};
 
     const product = await Product.findById(req.params.id);
-    if (!product) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Product not found" });
-    }
+    if (!product) return res.status(404).json({ success: false, message: "Product not found" });
 
     let priceChanged = false;
 
@@ -600,51 +540,27 @@ app.patch("/api/admin/products/:id", checkAdminKey, async (req, res) => {
     }
 
     if (typeof offerPercentage !== "undefined") {
-      const newOffer =
-        offerPercentage === "" || offerPercentage === null
-          ? 0
-          : Number(offerPercentage);
+      const newOffer = offerPercentage === "" || offerPercentage === null ? 0 : Number(offerPercentage);
       if (product.offerPercentage !== newOffer) {
         product.offerPercentage = newOffer;
         priceChanged = true;
       }
     }
 
-    if (typeof stock !== "undefined") {
-      product.stock =
-        stock === "" || stock === null ? 0 : Number(stock);
-    }
-
-    if (typeof hideProduct !== "undefined") {
-      product.hideProduct = !!hideProduct;
-    }
-
-    if (typeof images !== "undefined") {
-      product.images = Array.isArray(images)
-        ? images
-        : images
-        ? [images]
-        : [];
-    }
-
+    if (typeof stock !== "undefined") product.stock = stock === "" || stock === null ? 0 : Number(stock);
+    if (typeof hideProduct !== "undefined") product.hideProduct = !!hideProduct;
+    if (typeof images !== "undefined") product.images = Array.isArray(images) ? images : images ? [images] : [];
     if (typeof offerExpiry !== "undefined") {
-      if (!offerExpiry) {
-        product.offerExpiry = null;
-      } else {
+      if (!offerExpiry) product.offerExpiry = null;
+      else {
         const dt = new Date(offerExpiry);
-        if (!isNaN(dt.getTime())) {
-          product.offerExpiry = dt;
-        }
+        if (!isNaN(dt.getTime())) product.offerExpiry = dt;
       }
     }
 
     if (priceChanged) {
       product.priceHistory = product.priceHistory || [];
-      product.priceHistory.push({
-        price: product.price,
-        offerPercentage: product.offerPercentage,
-        changedAt: new Date(),
-      });
+      product.priceHistory.push({ price: product.price, offerPercentage: product.offerPercentage, changedAt: new Date() });
     }
 
     product.updatedAt = new Date();
@@ -653,26 +569,29 @@ app.patch("/api/admin/products/:id", checkAdminKey, async (req, res) => {
     res.json({ success: true, item: product });
   } catch (err) {
     console.error("🔥 PRODUCT UPDATE ERROR:", err);
-
     if (err.name === "ValidationError") {
-      return res.status(400).json({
-        success: false,
-        message: "Product validation failed.",
-        errors: err.errors,
-      });
+      return res.status(400).json({ success: false, message: "Product validation failed.", errors: err.errors });
     }
-
-    res.status(500).json({
-      success: false,
-      message: err.message || "Server error while updating product.",
-    });
+    res.status(500).json({ success: false, message: err.message || "Server error while updating product." });
   }
 });
 
 // =====================================================
 // SERVER START
 // =====================================================
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`✅ Super Computers backend running on port ${PORT}`);
 });
 
+// Graceful shutdown
+function shutdown() {
+  console.log("Shutting down server...");
+  server.close(() => {
+    mongoose.disconnect().finally(() => {
+      process.exit(0);
+    });
+  });
+}
+
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);
